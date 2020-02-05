@@ -1,7 +1,6 @@
 const request = require('request')
 
-//========================GET Request==================================
-
+//========================GET Request================================== 
 const optionGET = {
     method: "GET",
     url: "http://localhost:5001/complement-4254e/us-central1/app/test",
@@ -12,7 +11,6 @@ const optionGET = {
 };
 
 //========================POST Request==================================
-
 var queryText = "hello"
 
 const optionPOST = {

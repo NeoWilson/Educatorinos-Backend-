@@ -1,24 +1,26 @@
+/* Initialization */
 const functions = require('firebase-functions');
 const admin = require("firebase-admin");
 const express = require('express');
 const app = express();
 const port = 3005;
 
+/* Admin account initialization */
 var serviceAccount = require("../functions/private/complement-4254e-firebase-adminsdk-i34zx-589c173735.json");
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),
-  databaseURL: "https://complement-4254e.firebaseio.com"
+    databaseURL: "https://complement-4254e.firebaseio.com"
 });
-
 const database = admin.database();
 
+/* GET request */
 app.get("/test", (req, res)=>{
     // res.send("hi");
     res.end("bye");
 })
 
-app.post("/sendToFirebase", (req, res) => {
-
+/* POST request */
+app.post("/sendToFirebase", (req, res) => { 
     let databaseRef = database.ref("structure");
     var usersRef = databaseRef.child("users");
     usersRef.set({
@@ -31,11 +33,8 @@ app.post("/sendToFirebase", (req, res) => {
         full_name: "Grace Hopper"
     }
     });
-
     res.end("upload complete");
-	
 });
-
 exports.app = functions.https.onRequest(app);
 
 
