@@ -12,10 +12,14 @@ admin.initializeApp({
 
 const database = admin.database();
 
+//===================================Test GET Request=========================================
+
 app.get("/test", (req, res)=>{
     // res.send("hi");
     res.end("bye");
-})
+});
+
+//============================Test upload to Firebasåe===================================
 
 app.post("/sendToFirebase", (req, res) => {
 
@@ -34,6 +38,25 @@ app.post("/sendToFirebase", (req, res) => {
 
     res.end("upload complete");
 	
+});
+
+//============================Test fetch from Firebase===================================
+
+app.post("/getFromFirebase", (req,res)=>{
+
+	let databaseRef = database.ref("structure");
+	databaseRef = databaseRef.child("users");
+
+	databaseRef.once("value", function(snapshot) {
+		var array = [];
+		snapshot.forEach(function(childSnapshot) {
+			array.push(childSnapshot);
+		});
+		res.setHeader("Content-Type", "application/json");
+		res.end(JSON.stringify(array));
+		return;
+	});
+    
 });
 
 exports.app = functions.https.onRequest(app);
