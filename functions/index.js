@@ -59,7 +59,6 @@ app.post("/getFromFirebase", (req,res)=>{
     
 });
 
-console.log("Hi");
 
 exports.app = functions.https.onRequest(app);
 
