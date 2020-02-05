@@ -41,6 +41,6 @@ const optionPOSTretrieve = {
 };
 
 
-request(optionPOSTretrieve, function (error, response, body){
+request(optionPOSTupload, function (error, response, body){
     console.log(response.body);
 })

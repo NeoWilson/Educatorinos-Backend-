@@ -12,6 +12,7 @@ admin.initializeApp({
     databaseURL: "https://complement-4254e.firebaseio.com"
 });
 const database = admin.database();
+var ref = database.ref();
 
 //===================================Test GET Request=========================================
 
@@ -21,12 +22,13 @@ app.get("/test", (req, res)=>{
     res.end("bye");
 });
 
-//============================Test upload to Firebasåe===================================
+//============================Test upload to Firebase===================================
 
 /* POST request */
 app.post("/sendToFirebase", (req, res) => { 
-    let databaseRef = database.ref("structure");
-    var usersRef = databaseRef.child("users");
+    // let databaseRef = database.ref("structure");
+    var usersRef = ref.child("users");
+    
     usersRef.set({
     alanisawesome: {
         date_of_birth: "June 23, 1912",
@@ -43,7 +45,6 @@ app.post("/sendToFirebase", (req, res) => {
 //============================Test fetch from Firebase===================================
 
 app.post("/getFromFirebase", (req,res)=>{
-
 	let databaseRef = database.ref("structure");
 	databaseRef = databaseRef.child("users");
 
@@ -56,10 +57,7 @@ app.post("/getFromFirebase", (req,res)=>{
 		res.end(JSON.stringify(array));
 		return;
 	});
-    
 });
-
-
 exports.app = functions.https.onRequest(app);
 
 
