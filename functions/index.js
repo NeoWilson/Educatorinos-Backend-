@@ -37,7 +37,8 @@ app.post("/sendToFirebase", (req, res) => {
         full_name: "Grace Hopper",
         address: "",
         lala:"adsa",
-        bye:"ll"
+        bye:"ll",
+        try:"sda"
     }
     });
     res.end("upload complete");
