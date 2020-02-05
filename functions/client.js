@@ -11,7 +11,6 @@ const optionGET = {
 };
 
 //========================POST Request for upload==================================
-
 var queryText = "hello"
 
 const optionPOSTupload = {
@@ -27,7 +26,6 @@ const optionPOSTupload = {
 };
 
 //========================POST Request for fetch==================================
-
 var queryText = "hello"
 
 const optionPOSTretrieve = {
