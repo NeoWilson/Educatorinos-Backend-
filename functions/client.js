@@ -17,7 +17,7 @@ var queryText = "hello"
 
 const optionPOST = {
     method: "POST",
-    url: "http://localhost:5001/complement-4254e/us-central1/app/testpost",
+    url: "http://localhost:5001/complement-4254e/us-central1/app/sendToFirebase",
     headers: {
         "Authorization": "Basic ",
         "Content-Type": "multipart/form-data"
@@ -27,6 +27,6 @@ const optionPOST = {
     }
 };
 
-request(optionGET, function (error, response, body){
+request(optionPOST, function (error, response, body){
     console.log(response.body);
 })

@@ -1,7 +1,45 @@
 const functions = require('firebase-functions');
+const admin = require("firebase-admin");
 const express = require('express');
 const app = express();
 const port = 3005;
+
+var serviceAccount = require("../functions/private/complement-4254e-firebase-adminsdk-i34zx-589c173735.json");
+admin.initializeApp({
+  credential: admin.credential.cert(serviceAccount),
+  databaseURL: "https://complement-4254e.firebaseio.com"
+});
+
+const database = admin.database();
+
+app.get("/test", (req, res)=>{
+    // res.send("hi");
+    res.end("bye");
+})
+
+app.post("/sendToFirebase", (req, res) => {
+
+    let databaseRef = database.ref("structure");
+    var usersRef = databaseRef.child("users");
+    usersRef.set({
+    alanisawesome: {
+        date_of_birth: "June 23, 1912",
+        full_name: "Alan Turing"
+    },
+    gracehop: {
+        date_of_birth: "December 9, 1906",
+        full_name: "Grace Hopper"
+    }
+    });
+
+    res.end("upload complete");
+	
+});
+
+exports.app = functions.https.onRequest(app);
+
+
+//======================================================================================
 // // Create and Deploy Your First Cloud Functions
 // // https://firebase.google.com/docs/functions/write-firebase-functions
 //
@@ -12,10 +50,4 @@ const port = 3005;
 // app.listen(port, function(){
 //     console.log("Listening to Port "+ port);
 // });
-
-app.get("/test", (req, res)=>{
-    // res.send("hi");
-    res.end("bye");
-})
-
-exports.app = functions.https.onRequest(app);
+//======================================================================================
