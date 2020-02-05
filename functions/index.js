@@ -34,7 +34,8 @@ app.post("/sendToFirebase", (req, res) => {
     },
     gracehop: {
         date_of_birth: "December 9, 1906",
-        full_name: "Grace Hopper"
+        full_name: "Grace Hopper",
+        lala:"adsa"
     }
     });
     res.end("upload complete");
