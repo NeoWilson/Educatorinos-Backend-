@@ -1,7 +1,6 @@
 const request = require('request')
 
-//========================GET Request==================================
-
+//========================GET Request================================== 
 const optionGET = {
     method: "GET",
     url: "http://localhost:5001/complement-4254e/us-central1/app/test",
@@ -11,8 +10,12 @@ const optionGET = {
     }
 };
 
+<<<<<<< HEAD
 //========================POST Request for upload==================================
 
+=======
+//========================POST Request==================================
+>>>>>>> refs/remotes/origin/master
 var queryText = "hello"
 
 const optionPOSTupload = {
