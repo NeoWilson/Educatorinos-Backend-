@@ -13,12 +13,9 @@ admin.initializeApp({
 });
 const database = admin.database();
 
-<<<<<<< HEAD
 //===================================Test GET Request=========================================
 
-=======
 /* GET request */
->>>>>>> refs/remotes/origin/master
 app.get("/test", (req, res)=>{
     // res.send("hi");
     res.end("bye");
@@ -42,7 +39,6 @@ app.post("/sendToFirebase", (req, res) => {
     });
     res.end("upload complete");
 });
-<<<<<<< HEAD
 
 //============================Test fetch from Firebase===================================
 
@@ -63,8 +59,6 @@ app.post("/getFromFirebase", (req,res)=>{
     
 });
 
-=======
->>>>>>> refs/remotes/origin/master
 exports.app = functions.https.onRequest(app);
 
 

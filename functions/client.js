@@ -10,12 +10,7 @@ const optionGET = {
     }
 };
 
-<<<<<<< HEAD
 //========================POST Request for upload==================================
-
-=======
-//========================POST Request==================================
->>>>>>> refs/remotes/origin/master
 var queryText = "hello"
 
 const optionPOSTupload = {
@@ -31,7 +26,6 @@ const optionPOSTupload = {
 };
 
 //========================POST Request for fetch==================================
-
 var queryText = "hello"
 
 const optionPOSTretrieve = {
