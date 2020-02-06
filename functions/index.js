@@ -16,7 +16,7 @@ const database = admin.database();
 //===================================Test GET Request=========================================
 
 /* GET request */
-app.get("/test", (res)=>{
+app.get("/test", (req, res)=>{
     // res.send("hi");
     res.end("bye");
 });
@@ -44,19 +44,23 @@ app.post("/sendToFirebase", (req, res) => {
 });
 
 /* POST request to create user account */
-app.post("/createAccount", (req, playerId, playerName, playerClass) => {
-    playerId = "U1720925C";
-    databaseRef = database.ref(playerId);
+app.post("/createAccount", (req, res) => {
+    databaseRef = database.ref("Users");
     databaseRef.push();
-    playerName = "Alan";
-    playerClass = "TSP5";
-
-    databaseRef.set({
-        name: playerName,
-        class: playerClass
     
+    var playerId = databaseRef.child(req.body.id);
+    var playerName = req.body.name;
+    var playerClass = req.body.class;
+    var worldId = req.body.world_id;
+    var sectionId = req.body.section_id;
+    
+    playerId.set({
+        name: playerName,
+        class: playerClass,
+        world_id: worldId,
+        section_id: sectionId
     });
-    req.end("Account created");
+    res.end("Account created");
 });
 
 //============================Test fetch from Firebase===================================
