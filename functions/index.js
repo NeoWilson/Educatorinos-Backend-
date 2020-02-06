@@ -8,7 +8,7 @@ const port = 3005;
 /* Admin account initialization */
 var serviceAccount = require("../functions/private/complement-4254e-firebase-adminsdk-i34zx-589c173735.json");
 admin.initializeApp({
-  credential: admin.credential.cert(serviceAccount),
+    credential: admin.credential.cert(serviceAccount),
     databaseURL: "https://complement-4254e.firebaseio.com"
 });
 const database = admin.database();
@@ -17,7 +17,7 @@ var ref = database.ref();
 //===================================Test GET Request=========================================
 
 /* GET request */
-app.get("/test", (req, res)=>{
+app.get("/test", (res)=>{
     // res.send("hi");
     res.end("bye");
 });
@@ -31,7 +31,7 @@ app.post("/sendToFirebase", (req, res) => {
     
     usersRef.set({
     alanisawesome: {
-        date_of_birth: "June 23, 1912",
+        date_of_birth: "June 23, 19123",
         full_name: "Alan Turing"
     },
     gracehop: {
