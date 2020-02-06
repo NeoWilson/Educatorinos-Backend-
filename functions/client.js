@@ -40,7 +40,21 @@ const optionPOSTretrieve = {
     }
 };
 
+var queryText = "hello"
 
-request(optionPOSTupload, function (error, response, body){
+/* Method to create Account */
+const createAccount = {
+    method: "POST",
+    url: "http://localhost:5001/complement-4254e/us-central1/app/createAccount",
+    headers: {
+        "Authorization": "Basic ",
+        "Content-Type": "multipart/form-data"
+    },
+    formData : {
+        "input" : queryText
+    }
+};
+
+request(createAccount, function (error, response, body){
     console.log(response.body);
 })

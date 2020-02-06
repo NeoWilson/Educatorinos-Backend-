@@ -12,7 +12,6 @@ admin.initializeApp({
     databaseURL: "https://complement-4254e.firebaseio.com"
 });
 const database = admin.database();
-var ref = database.ref();
 
 //===================================Test GET Request=========================================
 
@@ -27,11 +26,11 @@ app.get("/test", (res)=>{
 /* POST request */
 app.post("/sendToFirebase", (req, res) => { 
     // let databaseRef = database.ref("structure");
-    var usersRef = ref.child("users");
+    var usersRef = databaseRef.child("users");
     
     usersRef.set({
     alanisawesome: {
-        date_of_birth: "June 23, 19123",
+        date_of_birth: "June 23, 1912",
         full_name: "Alan Turing"
     },
     gracehop: {
@@ -44,10 +43,26 @@ app.post("/sendToFirebase", (req, res) => {
     res.end("upload complete");
 });
 
+/* POST request to create user account */
+app.post("/createAccount", (req, playerId, playerName, playerClass) => {
+    playerId = "U1720925C";
+    databaseRef = database.ref(playerId);
+    databaseRef.push();
+    playerName = "Alan";
+    playerClass = "TSP5";
+
+    databaseRef.set({
+        name: playerName,
+        class: playerClass
+    
+    });
+    req.end("Account created");
+});
+
 //============================Test fetch from Firebase===================================
 
 app.post("/getFromFirebase", (req,res)=>{
-	let databaseRef = database.ref("structure");
+	// let databaseRef = database.ref("structure");
 	databaseRef = databaseRef.child("users");
 
 	databaseRef.once("value", function(snapshot) {
