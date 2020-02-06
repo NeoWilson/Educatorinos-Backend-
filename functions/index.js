@@ -51,14 +51,12 @@ app.post("/createAccount", (req, res) => {
     var playerId = databaseRef.child(req.body.id);
     var playerName = req.body.name;
     var playerClass = req.body.class;
-    var worldId = req.body.world_id;
-    var sectionId = req.body.section_id;
     
     playerId.set({
         name: playerName,
         class: playerClass,
-        world_id: worldId,
-        section_id: sectionId
+        world_id: "1",
+        section_id: "1-1"
     });
     res.end("Account created");
 });
