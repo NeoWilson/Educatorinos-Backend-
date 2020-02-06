@@ -46,12 +46,11 @@ app.post("/sendToFirebase", (req, res) => {
 /* POST request to create user account */
 app.post("/createAccount", (req, res) => {
     databaseRef = database.ref("Users");
-    databaseRef.push();
-    
+
     var playerId = databaseRef.child(req.body.id);
     var playerName = req.body.name;
     var playerClass = req.body.class;
-    
+
     playerId.set({
         name: playerName,
         class: playerClass,
