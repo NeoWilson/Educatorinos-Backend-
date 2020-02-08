@@ -68,6 +68,20 @@ const createWorld = {
     }
 };
 
-request(createWorld, function (error, response, body){
+
+const data = {user_id:'U1722845D'};
+/* Method to retrieve player current stage progress */
+const getCurrentSection = {
+    
+    method: "POST",
+    url: "http://localhost:5001/complement-4254e/us-central1/app/getCurrentSection",
+    headers: {
+        "Authorization": "Basic ",
+        "Content-Type": 'application/json;charset=utf-8'
+    },
+    body: JSON.stringify(data)
+};
+
+request(getCurrentSection, function (error, response, body){
     console.log(response.body);
 })

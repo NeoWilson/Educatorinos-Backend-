@@ -113,6 +113,17 @@ app.post("/createWorld", (req, res) => {
     res.end("World created");
 });
 
+/* POST request to get player current stage progress */
+app.post("/getCurrentSection", (req,res) => {
+    let playerRef = database.ref("Players");
+    const query = playerRef.child(req.body.user_id).child("current_progress");
+
+    query.once("value", function(snapshot) {
+        res.json({current_progress:snapshot});
+        return;
+    });
+});
+
 exports.app = functions.https.onRequest(app);
 
 
