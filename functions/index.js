@@ -79,6 +79,40 @@ app.post("/createAccount", (req, res) => {
     res.end("Account created");
 });
 
+/* POST request to create records in each world */
+app.post("/createWorld", (req, res) => {
+    let mapRef = database.ref("Maps");
+    let playerRef = database.ref("Players");
+
+    for(let x = 1; x <= 8; x++) {
+        setTimeout(function() { 
+            var world = mapRef.child("World " + x);
+            for(let y = 1; y <= 8; y++) {
+                setTimeout(function() { 
+                    var section = world.child(x + "-" + y);
+                    if(x == 1 && y == 1) {
+                        playerRef.once("value", function(snapshot) {
+                            snapshot.forEach(function(childSnapshot) {
+                                var section_id = section.child(childSnapshot.key);
+                                section_id.set({
+                                    score: "0"
+                                }); 
+                            });
+                        });
+                    }
+                    else{
+                        var section_id = section.child("No data");        
+                        section_id.set({
+                            score: "-"
+                        });
+                    }
+                }, 1000);
+            }
+        }, 1000);
+    }
+    res.end("World created");
+});
+
 exports.app = functions.https.onRequest(app);
 
 

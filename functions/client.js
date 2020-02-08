@@ -55,6 +55,19 @@ const createAccount = {
     }
 };
 
-request(createAccount, function (error, response, body){
+/* Method to create records for each world */
+const createWorld = {
+    method: "POST",
+    url: "http://localhost:5001/complement-4254e/us-central1/app/createWorld",
+    headers: {
+        "Authorization": "Basic ",
+        "Content-Type": "multipart/form-data"
+    },
+    formData : {
+        "input" : queryText
+    }
+};
+
+request(createWorld, function (error, response, body){
     console.log(response.body);
 })
