@@ -25,7 +25,7 @@ app.get("/test", (req, res)=>{
 
 /* POST request */
 app.post("/sendToFirebase", (req, res) => { 
-    // let databaseRef = database.ref("structure");
+    let databaseRef = database.ref("structure");
     var usersRef = databaseRef.child("users");
     
     usersRef.set({
@@ -43,27 +43,12 @@ app.post("/sendToFirebase", (req, res) => {
     res.end("upload complete");
 });
 
-/* POST request to create user account */
-app.post("/createAccount", (req, res) => {
-    databaseRef = database.ref("Users");
-
-    var playerId = databaseRef.child(req.body.id);
-    var playerName = req.body.name;
-    var playerClass = req.body.class;
-
-    playerId.set({
-        name: playerName,
-        class: playerClass,
-        world_id: "1",
-        section_id: "1-1"
-    });
-    res.end("Account created");
-});
-
 //============================Test fetch from Firebase===================================
 
 app.post("/getFromFirebase", (req,res)=>{
-	// let databaseRef = database.ref("structure");
+    console.log(req.body);
+
+    let databaseRef = database.ref("structure");
 	databaseRef = databaseRef.child("users");
 
 	databaseRef.once("value", function(snapshot) {
@@ -71,11 +56,29 @@ app.post("/getFromFirebase", (req,res)=>{
 		snapshot.forEach(function(childSnapshot) {
 			array.push(childSnapshot);
 		});
-		res.setHeader("Content-Type", "application/json");
+        res.setHeader("Content-Type", "application/json");
 		res.end(JSON.stringify(array));
 		return;
 	});
 });
+
+/* POST request to create user account */
+app.post("/createAccount", (req, res) => {
+    let userRef = database.ref("Players");
+
+    const playerId = userRef.child(req.body.user_id);
+    const playerName = req.body.name;
+    const playerClass = req.body.class;
+
+    playerId.set({
+        class: playerClass,
+        name: playerName,
+        score: "0",
+        current_progress: "1-1"
+    });
+    res.end("Account created");
+});
+
 exports.app = functions.https.onRequest(app);
 
 

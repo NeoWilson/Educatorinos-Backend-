@@ -26,21 +26,21 @@ const optionPOSTupload = {
 };
 
 //========================POST Request for fetch==================================
-var queryText = "hello"
+var input = {
+    name: 'John',
+    surname: 'Smith'
+};
 
 const optionPOSTretrieve = {
     method: "POST",
     url: "http://localhost:5001/complement-4254e/us-central1/app/getFromFirebase",
     headers: {
         "Authorization": "Basic ",
-        "Content-Type": "multipart/form-data"
+        "Content-Type": 'application/json;charset=utf-8'
     },
-    formData : {
-        "input" : queryText
-    }
+    body: JSON.stringify(input)
 };
 
-var queryText = "hello"
 
 /* Method to create Account */
 const createAccount = {
