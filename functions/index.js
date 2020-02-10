@@ -69,11 +69,11 @@ app.get("/getWorldPopulation", (req,res)=>{
     let worldID = request.worldID
     
     let databaseRef = database.ref("Maps")
-    databaseRef = databaseRef.child(worldID)
-    databaseRef = databaseRef.child(sectionID)
+    // databaseRef = databaseRef.child(worldID)
+    // databaseRef = databaseRef.child(sectionID)
     databaseRef.once("value", function(snapshot){
-        let queslist = snapshot.val();
-        res.json(queslist);
+        let maps = snapshot.val();
+        res.json(maps);
     })
 
 });
