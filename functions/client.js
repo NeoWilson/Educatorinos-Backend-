@@ -67,7 +67,7 @@ const createWorld = {
   }
 };
 
-const data = { user_id: "U1722845D" };
+const data = { player_id: "U1722845D" };
 /* Method to retrieve player current stage progress */
 const getCurrentWorldStatus = {
   method: "GET",
@@ -80,6 +80,18 @@ const getCurrentWorldStatus = {
   body: JSON.stringify(data)
 };
 
-request(getCurrentWorldStatus, function(error, response, body) {
+const data1 = { player_id: "U1720925C", section_id: "1-1", score: "2" };
+/* Method to retrieve player current stage progress */
+const setSectionStars = {
+  method: "POST",
+  url: "http://localhost:5001/complement-4254e/us-central1/app/setSectionStars",
+  headers: {
+    Authorization: "Basic ",
+    "Content-Type": "application/json;charset=utf-8"
+  },
+  body: JSON.stringify(data1)
+};
+
+request(setSectionStars, function(error, response, body) {
   console.log(response.body);
 });

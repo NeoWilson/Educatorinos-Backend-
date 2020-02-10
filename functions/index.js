@@ -117,7 +117,7 @@ app.get("/getCurrentWorldStatus", (req, res) => {
   let mapRef = database.ref("Maps");
   let jsonResult = [];
 
-  const user_id = req.body.user_id;
+  const player_id = req.body.user_id;
 
   /* Asynchronous function */
   async function getPlayerStatus() {
@@ -134,7 +134,7 @@ app.get("/getCurrentWorldStatus", (req, res) => {
         const users = maps[world][section];
         /* Iterate through each user_id key */
         Object.keys(users).forEach(id => {
-          if (user_id === id) {
+          if (player_id === id) {
             jsonResult.push({
               stage: section,
               score: maps[world][section][id]["score"]
@@ -168,6 +168,24 @@ app.get("/getCurrentWorldStatus", (req, res) => {
   //       });
   //     });
   //   });
+});
+
+app.post("/setSectionStars", (req, res) => {
+  const player_id = req.body.user_id;
+  const section_id = req.body.section_id;
+  const score = req.body.score;
+  const world = section_id.split("-");
+
+  let mapRef = database.ref("Maps");
+  let playerRef = mapRef
+    .child("World-" + world[0])
+    .child(section_id)
+    .child(player_id);
+
+  playerRef.update({
+    score: score
+  });
+  res.send("Updated completed");
 });
 
 exports.app = functions.https.onRequest(app);
