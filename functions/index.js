@@ -123,9 +123,9 @@ app.get("/getCurrentWorldStatus", (req, res) => {
   async function getPlayerStatus() {
     // Do all your await calls inside this function
     const snap = await mapRef.once("value");
-
     /* JSON object for Maps */
     const maps = snap.val();
+
     /* Iterate through each world key */
     Object.keys(maps).forEach(world => {
       const sections = maps[world];
@@ -179,17 +179,46 @@ app.post("/setSectionStars", (req, res) => {
   const world = section_id.split("-");
 
   /* Create database reference */
-  let mapRef = database.ref("Maps");
-  let playerRef = mapRef
+  let userRef = database
+    .ref("Maps")
     .child("World-" + world[0])
     .child(section_id)
     .child(player_id);
+  let playerRef = database.ref("Players").child(player_id);
 
-  /* Update specified player stage score */
-  playerRef.update({
-    score: score
-  });
-  res.send("Updated completed");
+  /* Asynchronous function */
+  async function setPlayerScore() {
+    const snap = await userRef.once("value");
+    const user = snap.val();
+
+    const newSnap = await playerRef.once("value");
+    const player = newSnap.val();
+
+    Object.keys(user).forEach(child => {
+      var currentScore = user[child];
+      var diffInScore = score - currentScore;
+
+      Object.keys(player).forEach(child => {
+        if (child == "score") {
+          var totalScore = player[child];
+          var newScore = Number(totalScore) + Number(diffInScore);
+
+          if (diffInScore > 0) {
+            /* Update specified player stage score */
+            userRef.update({
+              score: score
+            });
+            /* Update specified player total score */
+            playerRef.update({
+              score: newScore.toString()
+            });
+          }
+          res.send("Updated completed");
+        }
+      });
+    });
+  }
+  setPlayerScore();
 });
 
 exports.app = functions.https.onRequest(app);

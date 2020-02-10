@@ -80,7 +80,7 @@ const getCurrentWorldStatus = {
   body: JSON.stringify(data)
 };
 
-const data1 = { player_id: "U1720925C", section_id: "1-1", score: "2" };
+const data1 = { player_id: "U1720925C", section_id: "1-1", score: "3" };
 /* Method to retrieve player current stage progress */
 const setSectionStars = {
   method: "POST",
