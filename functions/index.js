@@ -61,7 +61,7 @@ app.post("/getFromFirebase", (req,res)=>{
     
 });
 
-//============================Get Total Player for given World===================================
+//============================Get Total Number of Players for given World===================================
 
 app.get("/getWorldPopulation", (req,res)=>{
 
@@ -79,6 +79,52 @@ app.get("/getWorldPopulation", (req,res)=>{
             }
         })
         let payload = {worldPopulation: totalplayer}
+        res.json(payload);
+    })
+
+});
+
+//============================Get all Score for all Player given World===================================
+
+app.get("/getLeaderboard", (req,res)=>{
+
+    let request = req.body
+    let worldID = request.worldID
+    let payload= []
+    let user = ""
+    let ppl = ""
+    let databaseRef = database.ref("Maps")
+    databaseRef = databaseRef.child(worldID)
+    databaseRef.once("value", function(snapshot){
+        let maps = snapshot.val();
+        snapshot.forEach(section=>{
+            // if (typeof maps[section] !== 'undefined'){
+                // let player = section.val();
+                // var user = player.score
+                // var score = section.score
+                section.forEach(section=>{
+                ppl = section
+                payload.push(ppl)
+                })
+                // section.forEach(player=>{
+                //     user = player
+                    // if (typeof maps[player] !== 'undefined'){
+                        // var score = player.score
+                        // array.push(section)
+                        // var playerId = section[player]
+                        // console.log(player)
+                        // payload[playerId].push(maps[player].score)
+                        // payload = payload.push()
+                        // totalscore = totalscore + parseInt(obj[wid][section][pid]['score'])
+                    // }
+                // let leaderboard = {user: score}
+                // payload.push(leaderboard)
+                // })
+                // var playerId = maps[section]
+                // payload = payload.push()
+                // totalscore = totalscore + parseInt(obj[wid][section][pid]['score'])
+            // }
+        })
         res.json(payload);
     })
 
