@@ -143,7 +143,7 @@ app.get("/getCurrentWorldStatus", (req, res) => {
         });
       });
     });
-    res.end(JSON.stringify(jsonResult));
+    // res.end(JSON.stringify(jsonResult));
   }
   getPlayerStatus();
 
@@ -170,18 +170,22 @@ app.get("/getCurrentWorldStatus", (req, res) => {
   //   });
 });
 
+/* POST request to update player score at specified stage */
 app.post("/setSectionStars", (req, res) => {
+  /* variables from the front end */
   const player_id = req.body.user_id;
   const section_id = req.body.section_id;
   const score = req.body.score;
   const world = section_id.split("-");
 
+  /* Create database reference */
   let mapRef = database.ref("Maps");
   let playerRef = mapRef
     .child("World-" + world[0])
     .child(section_id)
     .child(player_id);
 
+  /* Update specified player stage score */
   playerRef.update({
     score: score
   });
