@@ -21,7 +21,63 @@ app.get("/test", (req, res)=>{
     res.end("bye");
 });
 
-//============================Test upload to Firebasåe===================================
+//============================getWorldIds fetch from Firebase===================================
+
+app.get("/getWorldIds", (req,res)=>{
+
+	let databaseRef = database.ref("Maps");
+
+	databaseRef.once("value", function(snapshot) {
+		var array = [];
+		snapshot.forEach(function(Snapshot) {
+			array.push(Snapshot.key);
+		});
+		res.setHeader("Content-Type", "application/json");
+		res.end(JSON.stringify(array));
+		return;
+    });
+});
+
+//============================getQuestions fetch from Firebase===================================
+
+app.get("/getQuestions", (req,res)=>{
+
+	let databaseRef = database.ref("Maps");
+
+	databaseRef.once("value", function(snapshot) {
+		var array = [];
+		snapshot.forEach(function(Snapshot) {
+            array.push(Snapshot.key + ": " + Snapshot.child("Questions").val());
+        });
+        
+    //databaseRef.orderByDifficulty("Difficulty")
+
+		res.setHeader("Content-Type", "application/json");
+		res.end(JSON.stringify(array));
+		return;
+    });
+});
+
+//============================getStars fetch from Firebase===================================
+
+app.get("/getStars", (req,res)=>{
+
+	let databaseRef = database.ref("Maps");
+
+	databaseRef.once("value", function(snapshot) {
+		var array = [];
+		snapshot.forEach(function(Snapshot) {
+            if()
+            array.push(Snapshot.key + ": " + Snapshot.child("score").val());
+        });
+
+		res.setHeader("Content-Type", "application/json");
+		res.end(JSON.stringify(array));
+		return;
+    });
+});
+
+//============================Test upload to Firebase===================================
 
 /* POST request */
 app.post("/sendToFirebase", (req, res) => { 
@@ -60,7 +116,6 @@ app.post("/getFromFirebase", (req,res)=>{
 	});
     
 });
-
 
 exports.app = functions.https.onRequest(app);
 
