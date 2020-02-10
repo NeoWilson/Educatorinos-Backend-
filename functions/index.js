@@ -61,6 +61,23 @@ app.post("/getFromFirebase", (req,res)=>{
     
 });
 
+//============================Get Total Player for given World===================================
+
+app.get("/getWorldPopulation", (req,res)=>{
+
+    let request = req.body
+    let worldID = request.worldID
+    
+    let databaseRef = database.ref("Maps")
+    databaseRef = databaseRef.child(worldID)
+    databaseRef = databaseRef.child(sectionID)
+    databaseRef.once("value", function(snapshot){
+        let queslist = snapshot.val();
+        res.json(queslist);
+    })
+
+});
+
 
 exports.app = functions.https.onRequest(app);
 

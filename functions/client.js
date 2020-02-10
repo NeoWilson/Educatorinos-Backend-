@@ -3,7 +3,7 @@ const request = require('request')
 //========================GET Request================================== 
 const optionGET = {
     method: "GET",
-    url: "http://localhost:5001/complement-4254e/us-central1/app/test",
+    url: "http://localhost:5001/complement-4254e/us-central1/app//getWorldPopulation",
     headers: {
         "Authorization": "Basic ",
         "Content-Type": "multipart/form-data"
@@ -41,6 +41,6 @@ const optionPOSTretrieve = {
 };
 
 
-request(optionPOSTretrieve, function (error, response, body){
+request(optionGET, function (error, response, body){
     console.log(response.body);
 })
