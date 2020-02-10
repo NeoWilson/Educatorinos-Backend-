@@ -173,7 +173,7 @@ app.get("/getCurrentWorldStatus", (req, res) => {
 /* POST request to update player score at specified stage */
 app.post("/setSectionStars", (req, res) => {
   /* variables from the front end */
-  const player_id = req.body.user_id;
+  const player_id = req.body.player_id;
   const section_id = req.body.section_id;
   const score = req.body.score;
   const world = section_id.split("-");

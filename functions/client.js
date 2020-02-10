@@ -92,6 +92,6 @@ const setSectionStars = {
   body: JSON.stringify(data1)
 };
 
-request(getCurrentWorldStatus, function(error, response, body) {
+request(setSectionStars, function(error, response, body) {
   console.log(response.body);
 });
