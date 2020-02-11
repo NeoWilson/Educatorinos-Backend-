@@ -179,11 +179,7 @@ app.post("/setSectionStars", (req, res) => {
   const world = section_id.split("-");
 
   /* Create database reference */
-  let userRef = database
-    .ref("Maps")
-    .child("World-" + world[0])
-    .child(section_id)
-    .child(player_id);
+  let userRef = database.ref("Maps").child("World-" + world[0]);
   let playerRef = database.ref("Players").child(player_id);
 
   /* Asynchronous function */
@@ -194,29 +190,83 @@ app.post("/setSectionStars", (req, res) => {
     const newSnap = await playerRef.once("value");
     const player = newSnap.val();
 
-    Object.keys(user).forEach(child => {
-      var currentScore = user[child];
-      var diffInScore = score - currentScore;
-
+    /* No user has attempted this stage */
+    if (!(section_id in user)) {
       Object.keys(player).forEach(child => {
         if (child == "score") {
-          var totalScore = player[child];
-          var newScore = Number(totalScore) + Number(diffInScore);
+          var totalScore = parseInt(player[child]);
+          var newScore = totalScore + parseInt(score);
+          const newPlayerRecord = userRef.child(section_id).child(player_id);
 
-          if (diffInScore > 0) {
-            /* Update specified player stage score */
-            userRef.update({
-              score: score
-            });
+          /* Insert player stage score */
+          newPlayerRecord.set({
+            score: score.toString()
+          });
+          /* Update specified player total score */
+
+          playerRef.update({
+            score: newScore.toString()
+          });
+        }
+      });
+    } else if (section_id in user) {
+      /* User has yet to attempt stage */
+      let userRef = database
+        .ref("Maps")
+        .child("World-" + world[0])
+        .child(section_id);
+
+      const snap = await userRef.once("value");
+      const user = snap.val();
+
+      if (!(player_id in user)) {
+        Object.keys(player).forEach(child => {
+          if (child == "score") {
+            var totalScore = parseInt(player[child]);
+            var newScore = totalScore + parseInt(score);
+
+            userRef
+              .child(section_id)
+              .child(player_id)
+              .update({
+                score: score.toString()
+              });
+
             /* Update specified player total score */
             playerRef.update({
               score: newScore.toString()
             });
           }
-          res.send("Updated completed");
-        }
-      });
-    });
+        });
+      } else {
+        /* Improvement in score in user attempt */
+        Object.keys(user).forEach(child => {
+          if (child == player_id) {
+            var currentScore = parseInt(user[child].score);
+            var diffInScore = parseInt(score) - currentScore;
+
+            Object.keys(player).forEach(child => {
+              if (child == "score") {
+                var totalScore = parseInt(player[child]);
+                var newScore = totalScore + diffInScore;
+
+                if (diffInScore > 0) {
+                  /* Update specified player stage score */
+                  userRef.child(player_id).update({
+                    score: score.toString()
+                  });
+
+                  /* Update specified player total score */
+                  playerRef.update({
+                    score: newScore.toString()
+                  });
+                }
+              }
+            });
+          }
+        });
+      }
+    }
   }
   setPlayerScore();
 });
