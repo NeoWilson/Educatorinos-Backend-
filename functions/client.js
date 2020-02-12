@@ -33,65 +33,69 @@ var input = {
 
 const optionPOSTretrieve = {
   method: "POST",
-  url: "http://localhost:5001/complement-4254e/us-central1/app/getFromFirebase",
-  headers: {
-    Authorization: "Basic ",
-    "Content-Type": "application/json;charset=utf-8"
-  },
-  body: JSON.stringify(input)
-};
-
-/* Method to create Account */
-const createAccount = {
-  method: "POST",
-  url: "http://localhost:5001/complement-4254e/us-central1/app/createAccount",
-  headers: {
-    Authorization: "Basic ",
-    "Content-Type": "multipart/form-data"
-  },
-  formData: {
-    input: queryText
-  }
-};
-
-/* Method to create records for each world */
-const createWorld = {
-  method: "POST",
-  url: "http://localhost:5001/complement-4254e/us-central1/app/createWorld",
-  headers: {
-    Authorization: "Basic ",
-    "Content-Type": "multipart/form-data"
-  },
-  formData: {
-    input: queryText
-  }
-};
-
-const data = { player_id: "U1722845D" };
-/* Method to retrieve player current stage progress */
-const getCurrentWorldStatus = {
-  method: "GET",
   url:
-    "http://localhost:5001/complement-4254e/us-central1/app/getCurrentWorldStatus",
+    "http://localhost:5001/complement-4254e/us-central1/app/test/getFromFirebase",
   headers: {
     Authorization: "Basic ",
-    "Content-Type": "application/json;charset=utf-8"
+    "Content-Type": "multipart/form-data"
   },
-  body: JSON.stringify(data)
+  formData: {
+    input: queryText
+  }
 };
 
-const data1 = { player_id: "U1720925C", section_id: "1-1", score: "3" };
-/* Method to retrieve player current stage progress */
-const setSectionStars = {
+//========================Upload questions==================================
+var queryText = {
+  worldID: "World-1",
+  section: "1-1",
+  difficulty: "hard",
+  questions: "What is log(base 2) 16",
+  options: [3, 4, 7, 1],
+  answer: 0
+};
+
+const optionInitializeQuestions = {
   method: "POST",
-  url: "http://localhost:5001/complement-4254e/us-central1/app/setSectionStars",
+  url: "http://localhost:5001/complement-4254e/us-central1/app/addQuestion",
   headers: {
     Authorization: "Basic ",
     "Content-Type": "application/json;charset=utf-8"
   },
-  body: JSON.stringify(data1)
+  body: JSON.stringify(queryText)
 };
 
-request(setSectionStars, function(error, response, body) {
+//========================Get Stars /player/world==================================
+var queryText = {
+  worldID: "World-1",
+  playerID: "U1720925C"
+};
+
+const optionGetStars = {
+  method: "GET",
+  url: "http://localhost:5001/complement-4254e/us-central1/app/getStar",
+  headers: {
+    Authorization: "Basic ",
+    "Content-Type": "application/json;charset=utf-8"
+  },
+  body: JSON.stringify(queryText)
+};
+
+//========================Get question set per section==================================
+var queryText = {
+  worldID: "World-1",
+  sectionID: "1-1"
+};
+
+const optionGetQuestionSet = {
+  method: "GET",
+  url: "http://localhost:5001/complement-4254e/us-central1/app/russ/getques",
+  headers: {
+    Authorization: "Basic ",
+    "Content-Type": "application/json;charset=utf-8"
+  },
+  body: JSON.stringify(queryText)
+};
+
+request(optionGetQuestionSet, function(error, response, body) {
   console.log(response.body);
 });

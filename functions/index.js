@@ -2,10 +2,14 @@
 const functions = require("firebase-functions");
 const admin = require("firebase-admin");
 const express = require("express");
+const russRouter = require("./routes/apiRuss");
+const testRouter = require("./routes/apiTest");
+const elricRouter = require("./routes/apiElric");
+const wilsonRouter = require("./routes/apiWilson");
+const wanyingRouter = require("./routes/apiWanYing");
 const app = express();
-const port = 3005;
+// const port = 3005;
 
-/* Admin account initialization */
 var serviceAccount = require("../functions/private/complement-4254e-firebase-adminsdk-i34zx-589c173735.json");
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),
@@ -13,266 +17,15 @@ admin.initializeApp({
 });
 const database = admin.database();
 
-//===================================Test GET Request=========================================
+app.set("database", database);
 
-/* GET request */
-app.get("/test", (req, res) => {
-  // res.send("hi");
-  res.end("bye");
-});
-
-//============================Test upload to Firebase===================================
-
-/* POST request */
-app.post("/sendToFirebase", (req, res) => {
-  let databaseRef = database.ref("structure");
-  var usersRef = databaseRef.child("users");
-
-  usersRef.set({
-    alanisawesome: {
-      date_of_birth: "June 23, 1912",
-      full_name: "Alan Turing"
-    },
-    gracehop: {
-      date_of_birth: "December 9, 1906",
-      full_name: "Grace Hopper",
-      address: "",
-      lala: "adsa"
-    }
-  });
-  res.end("upload complete");
-});
-
-//============================Test fetch from Firebase===================================
-
-app.post("/getFromFirebase", (req, res) => {
-  console.log(req.body);
-
-  let databaseRef = database.ref("structure");
-  databaseRef = databaseRef.child("users");
-
-  databaseRef.once("value", function(snapshot) {
-    var array = [];
-    snapshot.forEach(function(childSnapshot) {
-      array.push(childSnapshot);
-    });
-    res.setHeader("Content-Type", "application/json");
-    res.end(JSON.stringify(array));
-    return;
-  });
-});
-
-/* POST request to create user account */
-app.post("/createAccount", (req, res) => {
-  let playerRef = database.ref("Players");
-
-  const playerId = playerRef.child(req.body.user_id);
-  const playerName = req.body.name;
-  const playerClass = req.body.class;
-
-  playerId.set({
-    class: playerClass,
-    name: playerName,
-    score: "0",
-    current_progress: "1-1"
-  });
-  res.end("Account created");
-});
-
-/* POST request to create records in each world */
-app.post("/createWorld", (req, res) => {
-  let mapRef = database.ref("Maps");
-  let playerRef = database.ref("Players");
-
-  for (let x = 1; x <= 8; x++) {
-    setTimeout(function() {
-      let world = mapRef.child("World-" + x);
-      for (let y = 1; y <= 8; y++) {
-        setTimeout(function() {
-          let section = world.child(x + "-" + y);
-          if (x == 1 && y == 1) {
-            playerRef.once("value", function(snapshot) {
-              snapshot.forEach(function(childSnapshot) {
-                let section_id = section.child(childSnapshot.key);
-                section_id.set({
-                  score: "0"
-                });
-              });
-            });
-          } else {
-            let section_id = section.child("No_Data");
-            section_id.set({
-              score: "-"
-            });
-          }
-        }, 1000);
-      }
-    }, 1000);
-  }
-  res.end("World created");
-});
-
-/* GET request to get player current stage progress */
-app.get("/getCurrentWorldStatus", (req, res) => {
-  let mapRef = database.ref("Maps");
-  let jsonResult = [];
-
-  const player_id = req.body.user_id;
-
-  /* Asynchronous function */
-  async function getPlayerStatus() {
-    // Do all your await calls inside this function
-    const snap = await mapRef.once("value");
-    /* JSON object for Maps */
-    const maps = snap.val();
-
-    /* Iterate through each world key */
-    Object.keys(maps).forEach(world => {
-      const sections = maps[world];
-      /* Iterate through each section key */
-      Object.keys(sections).forEach(section => {
-        const users = maps[world][section];
-        /* Iterate through each user_id key */
-        Object.keys(users).forEach(id => {
-          if (player_id === id) {
-            jsonResult.push({
-              stage: section,
-              score: maps[world][section][id]["score"]
-            });
-          }
-        });
-      });
-    });
-    // res.end(JSON.stringify(jsonResult));
-  }
-  getPlayerStatus();
-
-  /* Alternative Asyncronous function */
-  //   mapRef.once("value").then(snap => {
-  //     /* JSON object for Maps */
-  //     const maps = snap.val();
-
-  //     Object.keys(maps).forEach(world => {
-  //       const sections = maps[world];
-
-  //       Object.keys(sections).forEach(section => {
-  //         const users = maps[world][section];
-
-  //         Object.keys(users).forEach(id => {
-  //           if (user_id === id)
-  //             jsonResult.push({
-  //               stage: section,
-  //               score: maps[world][section][id]["score"]
-  //             });
-  //         });
-  //       });
-  //     });
-  //   });
-});
-
-/* POST request to update player score at specified stage */
-app.post("/setSectionStars", (req, res) => {
-  /* variables from the front end */
-  const player_id = req.body.player_id;
-  const section_id = req.body.section_id;
-  const score = req.body.score;
-  const world = section_id.split("-");
-
-  /* Create database reference */
-  let userRef = database.ref("Maps").child("World-" + world[0]);
-  let playerRef = database.ref("Players").child(player_id);
-
-  /* Asynchronous function */
-  async function setPlayerScore() {
-    const snap = await userRef.once("value");
-    const user = snap.val();
-
-    const newSnap = await playerRef.once("value");
-    const player = newSnap.val();
-
-    /* No user has attempted this stage */
-    if (!(section_id in user)) {
-      Object.keys(player).forEach(child => {
-        if (child == "score") {
-          var totalScore = parseInt(player[child]);
-          var newScore = totalScore + parseInt(score);
-          const newPlayerRecord = userRef.child(section_id).child(player_id);
-
-          /* Insert player stage score */
-          newPlayerRecord.set({
-            score: score.toString()
-          });
-          /* Update specified player total score */
-
-          playerRef.update({
-            score: newScore.toString()
-          });
-        }
-      });
-    } else if (section_id in user) {
-      /* User has yet to attempt stage */
-      let userRef = database
-        .ref("Maps")
-        .child("World-" + world[0])
-        .child(section_id);
-
-      const snap = await userRef.once("value");
-      const user = snap.val();
-
-      if (!(player_id in user)) {
-        Object.keys(player).forEach(child => {
-          if (child == "score") {
-            let totalScore = parseInt(player[child]);
-            let newScore = totalScore + parseInt(score);
-
-            userRef
-              .child(section_id)
-              .child(player_id)
-              .update({
-                score: score.toString()
-              });
-
-            /* Update specified player total score */
-            playerRef.update({
-              score: newScore.toString()
-            });
-          }
-        });
-      } else {
-        /* Improvement in score in user attempt */
-        Object.keys(user).forEach(child => {
-          if (child == player_id) {
-            let currentScore = parseInt(user[child].score);
-            let diffInScore = parseInt(score) - currentScore;
-
-            Object.keys(player).forEach(child => {
-              if (child == "score") {
-                let totalScore = parseInt(player[child]);
-                let newScore = totalScore + diffInScore;
-
-                if (diffInScore > 0) {
-                  /* Update specified player stage score */
-                  userRef.child(player_id).update({
-                    score: score.toString()
-                  });
-
-                  /* Update specified player total score */
-                  playerRef.update({
-                    score: newScore.toString()
-                  });
-                }
-              }
-            });
-          }
-        });
-      }
-    }
-  }
-  setPlayerScore();
-});
+app.use("/russ", russRouter);
+app.use("/test", testRouter);
+app.use("/elric", elricRouter);
+app.use("/wilson", wilsonRouter);
+app.use("/wy", wanyingRouter);
 
 exports.app = functions.https.onRequest(app);
-
 //======================================================================================
 // // Create and Deploy Your First Cloud Functions
 // // https://firebase.google.com/docs/functions/write-firebase-functions
