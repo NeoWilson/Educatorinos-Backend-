@@ -30,7 +30,7 @@ var queryText = "hello"
 
 const optionPOSTretrieve = {
     method: "POST",
-    url: "http://localhost:5001/complement-4254e/us-central1/app/getFromFirebase",
+    url: "http://localhost:5001/complement-4254e/us-central1/app/test/getFromFirebase",
     headers: {
         "Authorization": "Basic ",
         "Content-Type": "multipart/form-data"
@@ -88,7 +88,7 @@ var queryText = {
 
 const optionGetQuestionSet = {
     method: "GET",
-    url: "http://localhost:5001/complement-4254e/us-central1/app/getques",
+    url: "http://localhost:5001/complement-4254e/us-central1/app/russ/getques",
     headers: {
     "Authorization": "Basic ",
     "Content-Type": "application/json;charset=utf-8"
