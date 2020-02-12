@@ -7,7 +7,7 @@ var queryText = {
 
 const optionGetWorldPopulation = {
     method: "GET",
-    url: "http://localhost:5001/complement-4254e/us-central1/app/getWorldPopulation",
+    url: "http://localhost:5001/complement-4254e/us-central1/app/wy/getWorldPopulation",
     headers: {
     "Authorization": "Basic ",
     "Content-Type": "application/json;charset=utf-8"
@@ -26,7 +26,7 @@ var queryText = {
 
 const optionGetLeaderboard = {
     method: "GET",
-    url: "http://localhost:5001/complement-4254e/us-central1/app/getLeaderboard",
+    url: "http://localhost:5001/complement-4254e/us-central1/app/wy/getLeaderboard",
     headers: {
     "Authorization": "Basic ",
     "Content-Type": "application/json;charset=utf-8"
