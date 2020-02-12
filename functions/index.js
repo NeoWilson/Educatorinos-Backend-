@@ -86,21 +86,21 @@ app.post("/createWorld", (req, res) => {
 
   for (let x = 1; x <= 8; x++) {
     setTimeout(function() {
-      var world = mapRef.child("World-" + x);
+      let world = mapRef.child("World-" + x);
       for (let y = 1; y <= 8; y++) {
         setTimeout(function() {
-          var section = world.child(x + "-" + y);
+          let section = world.child(x + "-" + y);
           if (x == 1 && y == 1) {
             playerRef.once("value", function(snapshot) {
               snapshot.forEach(function(childSnapshot) {
-                var section_id = section.child(childSnapshot.key);
+                let section_id = section.child(childSnapshot.key);
                 section_id.set({
                   score: "0"
                 });
               });
             });
           } else {
-            var section_id = section.child("No_Data");
+            let section_id = section.child("No_Data");
             section_id.set({
               score: "-"
             });
@@ -222,8 +222,8 @@ app.post("/setSectionStars", (req, res) => {
       if (!(player_id in user)) {
         Object.keys(player).forEach(child => {
           if (child == "score") {
-            var totalScore = parseInt(player[child]);
-            var newScore = totalScore + parseInt(score);
+            let totalScore = parseInt(player[child]);
+            let newScore = totalScore + parseInt(score);
 
             userRef
               .child(section_id)
@@ -242,13 +242,13 @@ app.post("/setSectionStars", (req, res) => {
         /* Improvement in score in user attempt */
         Object.keys(user).forEach(child => {
           if (child == player_id) {
-            var currentScore = parseInt(user[child].score);
-            var diffInScore = parseInt(score) - currentScore;
+            let currentScore = parseInt(user[child].score);
+            let diffInScore = parseInt(score) - currentScore;
 
             Object.keys(player).forEach(child => {
               if (child == "score") {
-                var totalScore = parseInt(player[child]);
-                var newScore = totalScore + diffInScore;
+                let totalScore = parseInt(player[child]);
+                let newScore = totalScore + diffInScore;
 
                 if (diffInScore > 0) {
                   /* Update specified player stage score */
