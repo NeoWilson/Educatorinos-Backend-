@@ -2,12 +2,12 @@ const request = require("request");
 
 //========================GET Request==================================
 const optionGET = {
-  method: "GET",
-  url: "http://localhost:5001/complement-4254e/us-central1/app/test",
-  headers: {
-    Authorization: "Basic ",
-    "Content-Type": "multipart/form-data"
-  }
+    method: "GET",
+    url: "http://localhost:5001/complement-4254e/us-central1/app//test",
+    headers: {
+        "Authorization": "Basic ",
+        "Content-Type": "multipart/form-data"
+    }
 };
 
 //========================POST Request for upload==================================
@@ -32,70 +32,110 @@ var input = {
 };
 
 const optionPOSTretrieve = {
-  method: "POST",
-  url:
-    "http://localhost:5001/complement-4254e/us-central1/app/test/getFromFirebase",
-  headers: {
-    Authorization: "Basic ",
-    "Content-Type": "multipart/form-data"
-  },
-  formData: {
-    input: queryText
-  }
+    method: "POST",
+    url: "http://localhost:5001/complement-4254e/us-central1/app/getFromFirebase",
+    headers: {
+        "Authorization": "Basic ",
+        "Content-Type": "multipart/form-data"
+    },
+    formData : {
+        "input" : queryText
+    }
 };
+
 
 //========================Upload questions==================================
-var queryText = {
-  worldID: "World-1",
-  section: "1-1",
-  difficulty: "hard",
-  questions: "What is log(base 2) 16",
-  options: [3, 4, 7, 1],
-  answer: 0
-};
+var queryText = {   
+    worldID:"World-1",
+    section: "1-1",
+    difficulty: "hard",
+    questions: "What is log(base 2) 16",
+    options: [3,4,7,1],
+    answer: 0
+}
 
 const optionInitializeQuestions = {
-  method: "POST",
-  url: "http://localhost:5001/complement-4254e/us-central1/app/addQuestion",
-  headers: {
-    Authorization: "Basic ",
-    "Content-Type": "application/json;charset=utf-8"
-  },
-  body: JSON.stringify(queryText)
+method: "POST",
+url: "http://localhost:5001/complement-4254e/us-central1/app/addQuestion",
+headers: {
+"Authorization": "Basic ",
+"Content-Type": "application/json;charset=utf-8"
+},
+body : JSON.stringify(queryText)
+
 };
 
 //========================Get Stars /player/world==================================
-var queryText = {
-  worldID: "World-1",
-  playerID: "U1720925C"
+var queryText = {   
+worldID:"World-1",
+playerID: "U1720925C",
 };
 
 const optionGetStars = {
-  method: "GET",
-  url: "http://localhost:5001/complement-4254e/us-central1/app/getStar",
-  headers: {
-    Authorization: "Basic ",
-    "Content-Type": "application/json;charset=utf-8"
-  },
-  body: JSON.stringify(queryText)
+method: "GET",
+url: "http://localhost:5001/complement-4254e/us-central1/app/getStar",
+headers: {
+"Authorization": "Basic ",
+"Content-Type": "application/json;charset=utf-8"
+},
+body : JSON.stringify(queryText)
+
 };
 
+
 //========================Get question set per section==================================
-var queryText = {
-  worldID: "World-1",
-  sectionID: "1-1"
+var queryText = {   
+worldID:"World-1",
+sectionID: "1-1",
 };
 
 const optionGetQuestionSet = {
-  method: "GET",
-  url: "http://localhost:5001/complement-4254e/us-central1/app/russ/getques",
-  headers: {
-    Authorization: "Basic ",
+method: "GET",
+url: "http://localhost:5001/complement-4254e/us-central1/app/russ/getques",
+headers: {
+"Authorization": "Basic ",
+"Content-Type": "application/json;charset=utf-8"
+},
+body : JSON.stringify(queryText)
+
+};
+
+
+
+//========================Get Total Number of Players per world==================================
+var queryText = {   
+    worldID:"World-1",
+};
+
+const optionGetWorldPopulation = {
+    method: "GET",
+    url: "http://localhost:5001/complement-4254e/us-central1/app/getWorldPopulation",
+    headers: {
+    "Authorization": "Basic ",
     "Content-Type": "application/json;charset=utf-8"
   },
   body: JSON.stringify(queryText)
 };
 
-request(optionGetQuestionSet, function(error, response, body) {
-  console.log(response.body);
-});
+
+
+
+//========================Get All User and Score Earned per world==================================
+var queryText = {   
+    worldID:"World-1",
+};
+
+const optionGetLeaderboard = {
+    method: "GET",
+    url: "http://localhost:5001/complement-4254e/us-central1/app/getLeaderboard",
+    headers: {
+    "Authorization": "Basic ",
+    "Content-Type": "application/json;charset=utf-8"
+  },
+  body: JSON.stringify(queryText)
+};
+
+
+request(optionGetQuestionSet, function (error, response, body){
+    console.log(response.body);
+})
