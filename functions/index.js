@@ -19,55 +19,11 @@ const database = admin.database();
 
 app.set('database', database);
 
-<<<<<<< HEAD
-//============================Get Total Number of Players for given World===================================
-
-app.get("/getWorldPopulation", (req,res)=>{
-
-    let request = req.body
-    let worldID = request.worldID
-    let totalplayer = 0
-    
-    let databaseRef = database.ref("Maps")
-    databaseRef = databaseRef.child(worldID)
-    databaseRef.once("value", function(snapshot){
-        let maps = snapshot.val();
-        Object.keys(maps).forEach(section=>{
-            if (typeof maps[section] !== 'undefined'){
-                totalplayer = totalplayer + Object.keys(maps[section]).length;
-            }
-        })
-        let payload = {worldPopulation: totalplayer}
-        res.json(payload);
-    })
-
-});
-
-//============================Get all Score for all Player given World===================================
-
-app.get("/getLeaderboard", (req,res)=>{
-
-    let request = req.body
-    let worldID = request.worldID
-    let payload = []
-    let databaseRef = database.ref("Maps")
-    databaseRef = databaseRef.child(worldID)
-    databaseRef.once("value", function(snapshot){
-        let maps = snapshot.val();
-        snapshot.forEach(section=>{
-                        payload.push(section)
-        })
-        res.json(payload);
-    })
-});
-
-=======
 app.use('/russ', russRouter);
 app.use('/test', testRouter);
 app.use('/elric', elricRouter);
 app.use('/wilson', wilsonRouter);
 app.use('/wy', wanyingRouter);
->>>>>>> 7801acc188347568cad5426cd7d155fdac34a857
 
 exports.app = functions.https.onRequest(app);
 
