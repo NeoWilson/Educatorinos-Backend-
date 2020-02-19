@@ -1,10 +1,11 @@
 const express = require("express");
 const router = express.Router();
 
-/* POST request to create user account */
+/* POST request to create student account */
 router.post("/createAccount", (req, res) => {
   let database = req.app.get("database");
   let playerRef = database.ref("Players");
+
   const playerId = playerRef.child(req.body.user_id);
   const playerName = req.body.name;
   const playerClass = req.body.class;
@@ -14,6 +15,22 @@ router.post("/createAccount", (req, res) => {
     name: playerName,
     score: "0",
     current_progress: "1-1"
+  });
+  res.end("Account created");
+});
+
+/* POST request to create teacher account */
+router.post("/createTeacherAccount", (req, res) => {
+  let database = req.app.get("database");
+  let teacherRef = database.ref("Teachers");
+
+  const teacher_id = teacherRef.child(req.body.teacher_id);
+  const teacherName = req.body.name;
+  const teacherClass = req.body.class;
+
+  teacher_id.set({
+    class: teacherClass,
+    name: teacherName
   });
   res.end("Account created");
 });
@@ -84,7 +101,7 @@ router.get("/getCurrentWorldStatus", (req, res) => {
         });
       });
     });
-    // res.end(JSON.stringify(jsonResult));
+    res.end(JSON.stringify(jsonResult));
   }
   getPlayerStatus();
 

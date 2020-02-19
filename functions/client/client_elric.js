@@ -52,6 +52,24 @@ const optionPostCreateAccount = {
   body: JSON.stringify(queryText)
 };
 
-request(optionPostCreateAccount, function(error, response, body) {
+/* POST request to create teacher account */
+var queryText = {
+  teacher_id: "E1728357D",
+  name: "Guang Wei",
+  class: "TSP8"
+};
+
+const optionPostCreateTeacherAccount = {
+  method: "POST",
+  url:
+    "http://localhost:5001/complement-4254e/us-central1/app/elric/createTeacherAccount",
+  headers: {
+    Authorization: "Basic ",
+    "Content-Type": "application/json;charset=utf-8"
+  },
+  body: JSON.stringify(queryText)
+};
+
+request(optionPostCreateTeacherAccount, function(error, response, body) {
   console.log(response.body);
 });
