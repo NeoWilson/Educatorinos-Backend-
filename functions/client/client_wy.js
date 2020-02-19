@@ -17,8 +17,6 @@ const optionGetWorldPopulation = {
 };
 
 
-
-
 //========================Get All User and Score Earned per world==================================
 var queryText = {   
     worldID:"World-1",
@@ -36,6 +34,6 @@ const optionGetLeaderboard = {
 };
 
 
-request(optionGetLeaderboard, function (error, response, body){
+request(optionGetWorldPopulation, function (error, response, body){
     console.log(response.body);
 })

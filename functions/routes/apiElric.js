@@ -84,7 +84,7 @@ router.get("/getCurrentWorldStatus", (req, res) => {
             });
         });
         });
-        // res.end(JSON.stringify(jsonResult));
+        res.end(JSON.stringify(jsonResult));
     }
     getPlayerStatus();
 
@@ -168,7 +168,6 @@ router.post("/setSectionStars", (req, res) => {
                 let newScore = totalScore + parseInt(score);
 
                 userRef
-                .child(section_id)
                 .child(player_id)
                 .update({
                     score: score.toString()
@@ -211,6 +210,7 @@ router.post("/setSectionStars", (req, res) => {
         }
     }
     setPlayerScore();
+    res.end("Player Score Updated")
 });
 
   module.exports = router
