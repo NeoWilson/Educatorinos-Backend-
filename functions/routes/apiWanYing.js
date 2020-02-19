@@ -4,81 +4,50 @@ const router = express.Router()
 router.get("/getWorldPopulation", (req,res)=>{
     let database = req.app.get('database');
     let request = req.body
-    let worldID = request.worldID
-   
+    let worldID = request.worldID 
+    let userArr = [] // array that contains unique users
+    let worldRef = database.ref("Maps").child(worldID) // world pointer
 
-    let worldRef = database.ref("Maps").child(worldID)
-    worldRef.once("value", function(snapshot){
-        let world = snapshot.val();
-        let userArr = []
-        // let totalplayer = 0
-
-        // console.log(maps)
+    worldRef.once("value", function(snapshot){  
+        let world = snapshot.val(); // list of world objects in json
         Object.keys(world).forEach(section=>{
             if (typeof world[section] !== 'undefined'){
-                // if (section.nam)
-                let sections = world[section]
-                // let dict = {}
-                // console.log(sections)
+                let sections = world[section] // list of sections object in json
                 Object.keys(sections).forEach(user=>{
-                    // score = user["score"]
-                    if(userArr.indexOf(user) == -1){
-                        // dict[user] = parseInt(world[section][user]["score"]);
-                        userArr.push(user)
-                        // totalplayer += 1
-                        console.log(userArr.length)
-                    }
-                
-                    // console.log(world[section][user]["score"])
-                    // console.log(user)
-                })
-                // console.log(section.value)
-                // totalplayer = totalplayer + Object.keys(world[section]).length;    
+                    if(userArr.indexOf(user) == -1){  // check if the user does not exist in the array
+                        userArr.push(user) // push the new user into the array 
+                    }  
+                })         
             }
         });
-        // console.log(dict);
-        // console.log(totalplayer)
-        let payload = {worldPopulation: userArr.length}
-        res.json(payload);
+        let payload = {worldPopulation: userArr.length} // set the world population to the array size
+        res.json(payload); // returns the world population
     })
-
-
 });
 
 router.get("/getLeaderboard", (req,res)=>{
     let database = req.app.get('database');
     let request = req.body
     let worldID = request.worldID
-    let payload = []
     let worldRef = database.ref("Maps").child(worldID)
     worldRef.once("value", function(snapshot){
-        let world = snapshot.val();
-        let dict = {}
+        let world = snapshot.val(); 
+        let dict = {} // dictionary to store userid: score
 
-        // console.log(maps)
         Object.keys(world).forEach(section=>{
-            if (typeof world[section] !== 'undefined'){
-                // if (section.nam)
-                let sections = world[section]
-                // let dict = {}
-                // console.log(sections)
+            if (typeof world[section] !== 'undefined'){ // check that the section exists
+                let sections = world[section] // section object in json
                 Object.keys(sections).forEach(user=>{
-                    // score = user["score"]
-                    if(!(user in dict)){
-                        dict[user] = parseInt(world[section][user]["score"]);
+                    if(!(user in dict)){ // check for new user
+                        dict[user] = parseInt(world[section][user]["score"]); // set the dict's score of the new user
                     }
-                    else{
-                        dict[user] += parseInt(world[section][user]["score"]);
+                    else{ // existing user
+                        dict[user] += parseInt(world[section][user]["score"]); // tally up individual user score achieved in each section
                     }
-                    // console.log(world[section][user]["score"])
-                    // console.log(user)
-                })
-                // console.log(section.value)
-                // totalplayer = totalplayer + Object.keys(world[section]).length;    
+                })   
             }
         });
-        console.log(dict);
-        res.json(dict);
+        res.json(dict); // return the userid & their score
     })
 });
 
