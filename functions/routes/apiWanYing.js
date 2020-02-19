@@ -5,20 +5,43 @@ router.get("/getWorldPopulation", (req,res)=>{
     let database = req.app.get('database');
     let request = req.body
     let worldID = request.worldID
-    let totalplayer = 0
-    
-    let databaseRef = database.ref("Maps")
-    databaseRef = databaseRef.child(worldID)
-    databaseRef.once("value", function(snapshot){
-        let maps = snapshot.val();
-        Object.keys(maps).forEach(section=>{
-            if (typeof maps[section] !== 'undefined'){
-                totalplayer = totalplayer + Object.keys(maps[section]).length;
+   
+
+    let worldRef = database.ref("Maps").child(worldID)
+    worldRef.once("value", function(snapshot){
+        let world = snapshot.val();
+        let userArr = []
+        // let totalplayer = 0
+
+        // console.log(maps)
+        Object.keys(world).forEach(section=>{
+            if (typeof world[section] !== 'undefined'){
+                // if (section.nam)
+                let sections = world[section]
+                // let dict = {}
+                // console.log(sections)
+                Object.keys(sections).forEach(user=>{
+                    // score = user["score"]
+                    if(userArr.indexOf(user) == -1){
+                        // dict[user] = parseInt(world[section][user]["score"]);
+                        userArr.push(user)
+                        // totalplayer += 1
+                        console.log(userArr.length)
+                    }
+                
+                    // console.log(world[section][user]["score"])
+                    // console.log(user)
+                })
+                // console.log(section.value)
+                // totalplayer = totalplayer + Object.keys(world[section]).length;    
             }
-        })
-        let payload = {worldPopulation: totalplayer}
+        });
+        // console.log(dict);
+        // console.log(totalplayer)
+        let payload = {worldPopulation: userArr.length}
         res.json(payload);
     })
+
 
 });
 
@@ -27,14 +50,35 @@ router.get("/getLeaderboard", (req,res)=>{
     let request = req.body
     let worldID = request.worldID
     let payload = []
-    let databaseRef = database.ref("Maps")
-    databaseRef = databaseRef.child(worldID)
-    databaseRef.once("value", function(snapshot){
-        let maps = snapshot.val();
-        snapshot.forEach(section=>{
-                        payload.push(section)
-        })
-        res.json(payload);
+    let worldRef = database.ref("Maps").child(worldID)
+    worldRef.once("value", function(snapshot){
+        let world = snapshot.val();
+        let dict = {}
+
+        // console.log(maps)
+        Object.keys(world).forEach(section=>{
+            if (typeof world[section] !== 'undefined'){
+                // if (section.nam)
+                let sections = world[section]
+                // let dict = {}
+                // console.log(sections)
+                Object.keys(sections).forEach(user=>{
+                    // score = user["score"]
+                    if(!(user in dict)){
+                        dict[user] = parseInt(world[section][user]["score"]);
+                    }
+                    else{
+                        dict[user] += parseInt(world[section][user]["score"]);
+                    }
+                    // console.log(world[section][user]["score"])
+                    // console.log(user)
+                })
+                // console.log(section.value)
+                // totalplayer = totalplayer + Object.keys(world[section]).length;    
+            }
+        });
+        console.log(dict);
+        res.json(dict);
     })
 });
 
