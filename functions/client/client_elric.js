@@ -2,7 +2,7 @@ const request = require("request");
 
 /* GET request to get player current stage progress */
 var queryText = {
-  user_id: "U1720925C"
+  playerID: "U1720925C"
 };
 
 const optionGetStageProgress = {
@@ -18,8 +18,8 @@ const optionGetStageProgress = {
 
 /* POST request to update player score at specified stage */
 var queryText = {
-  player_id: "U1720925C",
-  section_id: "1-9",
+  playerID: "U1720925C",
+  sectionID: "1-9",
   score: "2"
 };
 
@@ -36,9 +36,9 @@ const optionPostUpdateSectionScore = {
 
 /* POST request to create user account */
 var queryText = {
-  user_id: "U1720526FC",
-  name: "Russell",
-  class: "TSP8"
+  playerID: "U1720526FC",
+  playerName: "Russell",
+  playerClass: "TSP8"
 };
 
 const optionPostCreateAccount = {
@@ -54,9 +54,9 @@ const optionPostCreateAccount = {
 
 /* POST request to create teacher account */
 var queryText = {
-  teacher_id: "E1728357D",
-  name: "Guang Wei",
-  class: "TSP8"
+  teacherID: "E1728357D",
+  teacherName: "Guang Wei",
+  teacherClass: "TSP8"
 };
 
 const optionPostCreateTeacherAccount = {
@@ -70,6 +70,6 @@ const optionPostCreateTeacherAccount = {
   body: JSON.stringify(queryText)
 };
 
-request(optionPostUpdateSectionScore, function(error, response, body) {
+request(optionPostCreateTeacherAccount, function(error, response, body) {
   console.log(response.body);
 });

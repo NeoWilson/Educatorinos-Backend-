@@ -6,9 +6,9 @@ router.post("/createAccount", (req, res) => {
   let database = req.app.get("database");
   let playerRef = database.ref("Players");
 
-  const playerId = playerRef.child(req.body.user_id);
-  const playerName = req.body.name;
-  const playerClass = req.body.class;
+  const playerId = playerRef.child(req.body.playerID);
+  const playerName = req.body.playerName;
+  const playerClass = req.body.playerClass;
 
   playerId.set({
     class: playerClass,
@@ -24,9 +24,9 @@ router.post("/createTeacherAccount", (req, res) => {
   let database = req.app.get("database");
   let teacherRef = database.ref("Teachers");
 
-  const teacher_id = teacherRef.child(req.body.teacher_id);
-  const teacherName = req.body.name;
-  const teacherClass = req.body.class;
+  const teacher_id = teacherRef.child(req.body.teacherID);
+  const teacherName = req.body.teacherName;
+  const teacherClass = req.body.teacherClass;
 
   teacher_id.set({
     class: teacherClass,
@@ -75,7 +75,7 @@ router.get("/getCurrentWorldStatus", (req, res) => {
   let mapRef = database.ref("Maps");
   let jsonResult = [];
 
-  const player_id = req.body.user_id;
+  const player_id = req.body.playerID;
 
   /* Asynchronous function */
   async function getPlayerStatus() {
@@ -132,8 +132,8 @@ router.get("/getCurrentWorldStatus", (req, res) => {
 router.post("/setSectionStars", (req, res) => {
   /* variables from the front end */
   let database = req.app.get("database");
-  const player_id = req.body.player_id;
-  const section_id = req.body.section_id;
+  const player_id = req.body.playerID;
+  const section_id = req.body.sectionID;
   const score = req.body.score;
   const world = section_id.split("-");
 
@@ -228,6 +228,7 @@ router.post("/setSectionStars", (req, res) => {
     }
   }
   setPlayerScore();
+  res.end("Updates done!");
 });
 
 module.exports = router;
