@@ -70,6 +70,6 @@ const optionPostCreateTeacherAccount = {
   body: JSON.stringify(queryText)
 };
 
-request(optionPostCreateTeacherAccount, function(error, response, body) {
+request(optionPostUpdateSectionScore, function(error, response, body) {
   console.log(response.body);
 });
