@@ -4,37 +4,50 @@ const router = express.Router()
 router.get("/getWorldPopulation", (req,res)=>{
     let database = req.app.get('database');
     let request = req.body
-    let worldID = request.worldID
-    let totalplayer = 0
-    
-    let databaseRef = database.ref("Maps")
-    databaseRef = databaseRef.child(worldID)
-    databaseRef.once("value", function(snapshot){
-        let maps = snapshot.val();
-        Object.keys(maps).forEach(section=>{
-            if (typeof maps[section] !== 'undefined'){
-                totalplayer = totalplayer + Object.keys(maps[section]).length;
-            }
-        })
-        let payload = {worldPopulation: totalplayer}
-        res.json(payload);
-    })
+    let worldID = request.worldID 
+    let userArr = [] // array that contains unique users
+    let worldRef = database.ref("Maps").child(worldID) // world pointer
 
+    worldRef.once("value", function(snapshot){  
+        let world = snapshot.val(); // list of world objects in json
+        Object.keys(world).forEach(section=>{
+            if (typeof world[section] !== 'undefined'){
+                let sections = world[section] // list of sections object in json
+                Object.keys(sections).forEach(user=>{
+                    if(userArr.indexOf(user) == -1){  // check if the user does not exist in the array
+                        userArr.push(user) // push the new user into the array 
+                    }  
+                })         
+            }
+        });
+        let payload = {worldPopulation: userArr.length} // set the world population to the array size
+        res.json(payload); // returns the world population
+    })
 });
 
 router.get("/getLeaderboard", (req,res)=>{
     let database = req.app.get('database');
     let request = req.body
     let worldID = request.worldID
-    let payload = []
-    let databaseRef = database.ref("Maps")
-    databaseRef = databaseRef.child(worldID)
-    databaseRef.once("value", function(snapshot){
-        let maps = snapshot.val();
-        snapshot.forEach(section=>{
-                        payload.push(section)
-        })
-        res.json(payload);
+    let worldRef = database.ref("Maps").child(worldID)
+    worldRef.once("value", function(snapshot){
+        let world = snapshot.val(); 
+        let dict = {} // dictionary to store userid: score
+
+        Object.keys(world).forEach(section=>{
+            if (typeof world[section] !== 'undefined'){ // check that the section exists
+                let sections = world[section] // section object in json
+                Object.keys(sections).forEach(user=>{
+                    if(!(user in dict)){ // check for new user
+                        dict[user] = parseInt(world[section][user]["score"]); // set the dict's score of the new user
+                    }
+                    else{ // existing user
+                        dict[user] += parseInt(world[section][user]["score"]); // tally up individual user score achieved in each section
+                    }
+                })   
+            }
+        });
+        res.json(dict); // return the userid & their score
     })
 });
 
