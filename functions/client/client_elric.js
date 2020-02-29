@@ -1,19 +1,13 @@
 const request = require("request");
 
-/* GET request to get player current stage progress */
-var queryText = {
-  playerID: "U1720925C"
-};
-
 const optionGetStageProgress = {
   method: "GET",
   url:
-    "http://localhost:5001/complement-4254e/us-central1/app/elric/getCurrentWorldStatus",
+    "http://localhost:5001/complement-4254e/us-central1/app/elric/getCurrentWorldStatus/?playerID=U1720925C",
   headers: {
     Authorization: "Basic ",
     "Content-Type": "application/json;charset=utf-8"
-  },
-  body: JSON.stringify(queryText)
+  }
 };
 
 /* POST request to update player score at specified stage */
@@ -70,6 +64,6 @@ const optionPostCreateTeacherAccount = {
   body: JSON.stringify(queryText)
 };
 
-request(optionPostCreateTeacherAccount, function(error, response, body) {
+request(optionPostUpdateSectionScore, function(error, response, body) {
   console.log(response.body);
 });
