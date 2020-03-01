@@ -43,9 +43,9 @@ function constructpayload(pid, wid, obj){
 
 router.get("/getStar", (req,res)=>{
     let database = req.app.get('database');
-    let request = req.body
-    let playerID = request.playerID
-    let worldID = request.worldID
+    // let request = req.body
+    let playerID = req.query.playerID
+    let worldID = req.query.worldID
     let payload = ""
 
 	let databaseRef = database.ref("Maps");
@@ -60,9 +60,9 @@ router.get("/getStar", (req,res)=>{
 //===Get Player score for world===
 router.get("/getques", (req,res)=>{
     let database = req.app.get('database');
-    let request = req.body
-    let worldID = request.worldID
-    let sectionID = request.sectionID
+    // let request = req.body
+    let worldID = req.query.worldID
+    let sectionID = req.query.sectionID
     
     let databaseRef = database.ref("QuestionBank")
     databaseRef = databaseRef.child(worldID)
