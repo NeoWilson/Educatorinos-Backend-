@@ -52,7 +52,7 @@ router.post("/createWorld", (req, res) => {
       for (let y = 1; y <= 8; y++) {
         setTimeout(function() {
           let section = world.child(x + "-" + y);
-          if (x == 1 && y == 1) {
+          if (x === 1 && y === 1) {
             playerRef.once("value", function(snapshot) {
               snapshot.forEach(function(childSnapshot) {
                 let section_id = section.child(childSnapshot.key);
@@ -164,7 +164,7 @@ router.post("/setSectionStars", (req, res) => {
     /* No user has attempted this stage */
     if (!(section_id in users)) {
       Object.keys(players).forEach(child => {
-        if (child == "score") {
+        if (child === "score") {
           var totalScore = parseInt(players[child]);
           var newScore = totalScore + parseInt(score);
           const newPlayerRecord = userRef.child(section_id).child(player_id);
@@ -192,7 +192,7 @@ router.post("/setSectionStars", (req, res) => {
 
       if (!(player_id in users)) {
         Object.keys(players).forEach(child => {
-          if (child == "score") {
+          if (child === "score") {
             let totalScore = parseInt(players[child]);
             let newScore = totalScore + parseInt(score);
 
@@ -209,12 +209,12 @@ router.post("/setSectionStars", (req, res) => {
       } else {
         /* Improvement in score in user attempt */
         Object.keys(users).forEach(child => {
-          if (child == player_id) {
+          if (child === player_id) {
             let currentScore = parseInt(users[child].score);
             let diffInScore = parseInt(score) - currentScore;
 
             Object.keys(players).forEach(child => {
-              if (child == "score") {
+              if (child === "score") {
                 let totalScore = parseInt(players[child]);
                 let newScore = totalScore + diffInScore;
 

@@ -13,7 +13,7 @@ router.get("/getWorldPopulation", (req,res)=>{
             if (typeof world[section] !== 'undefined'){
                 let sections = world[section] // list of sections object in json
                 Object.keys(sections).forEach(user=>{
-                    if(userArr.indexOf(user) == -1){  // check if the user does not exist in the array
+                    if(userArr.indexOf(user) === -1){  // check if the user does not exist in the array
                         userArr.push(user) // push the new user into the array 
                     }  
                 })         
