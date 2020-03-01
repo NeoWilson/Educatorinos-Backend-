@@ -53,7 +53,7 @@ var queryText = {
 
 const optionInitializeQuestions = {
 method: "POST",
-url: "http://localhost:5001/complement-4254e/us-central1/app/addQuestion",
+url: "http://localhost:5001/complement-4254e/us-central1/app/russ/addQuestion",
 headers: {
 "Authorization": "Basic ",
 "Content-Type": "application/json;charset=utf-8"
@@ -69,14 +69,16 @@ worldID:"World-1",
 playerID: "U1720925C",
 };
 
+//https://us-central1-complement-4254e.cloudfunctions.net/app/russ/getStar
+
 const optionGetStars = {
-method: "GET",
-url: "http://localhost:5001/complement-4254e/us-central1/app/getStar",
-headers: {
-"Authorization": "Basic ",
-"Content-Type": "application/json;charset=utf-8"
-},
-body : JSON.stringify(queryText)
+    method: "GET",
+    url: "http://localhost:5001/complement-4254e/us-central1/app/russ/getStar",
+    headers: {
+    "Authorization": "Basic ",
+    "Content-Type": "application/json;charset=utf-8"
+    },
+    body : JSON.stringify(queryText)
 
 };
 
@@ -98,6 +100,6 @@ body : JSON.stringify(queryText)
 
 };
 
-request(optionGetQuestionSet, function (error, response, body){
+request(optionGetStars, function (error, response, body){
     console.log(response.body);
 })

@@ -22,7 +22,7 @@ router.get("/getWorldPopulation", (req,res)=>{
                 // console.log(sections)
                 Object.keys(sections).forEach(user=>{
                     // score = user["score"]
-                    if(userArr.indexOf(user) == -1){
+                    if(userArr.indexOf(user) === -1){
                         // dict[user] = parseInt(world[section][user]["score"]);
                         userArr.push(user)
                         // totalplayer += 1

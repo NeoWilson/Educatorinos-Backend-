@@ -58,7 +58,6 @@ router.get("/getStar", (req,res)=>{
 });
 
 //===Get Player score for world===
-
 router.get("/getques", (req,res)=>{
     let database = req.app.get('database');
     let request = req.body
