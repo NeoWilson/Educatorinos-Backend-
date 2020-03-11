@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router();
 
 /* POST request to create student account */
-router.post("/createAccount", (req, res) => {
+router.post("/createPlayerAccount", (req, res) => {
   /* Firebase reference */
   let database = req.app.get("database");
   let playerRef = database.ref("Players");
@@ -15,7 +15,8 @@ router.post("/createAccount", (req, res) => {
   playerId.set({
     class: playerClass,
     name: playerName,
-    score: "0",
+    stars: "0",
+    medals: "0",
     current_progress: "1-1"
   });
   res.end("Account created");
@@ -46,27 +47,21 @@ router.post("/createWorld", (req, res) => {
   let mapRef = database.ref("Maps");
   let playerRef = database.ref("Players");
 
-  for (let x = 1; x <= 8; x++) {
+  for (let x = 1; x <= 6; x++) {
     setTimeout(function() {
       let world = mapRef.child("World-" + x);
-      for (let y = 1; y <= 8; y++) {
+      for (let y = 1; y <= 6; y++) {
         setTimeout(function() {
           let section = world.child(x + "-" + y);
-          if (x === 1 && y === 1) {
-            playerRef.once("value", function(snapshot) {
-              snapshot.forEach(function(childSnapshot) {
-                let section_id = section.child(childSnapshot.key);
-                section_id.set({
-                  score: "0"
-                });
+
+          playerRef.once("value", function(snapshot) {
+            snapshot.forEach(function(childSnapshot) {
+              let section_id = section.child(childSnapshot.key);
+              section_id.set({
+                stars: y
               });
             });
-          } else {
-            let section_id = section.child("No_Data");
-            section_id.set({
-              score: "-"
-            });
-          }
+          });
         }, 1000);
       }
     }, 1000);
@@ -95,7 +90,6 @@ router.get("/getCurrentWorldStatus", (req, res) => {
     /* Iterate through each world key */
     Object.keys(maps).forEach(world => {
       const sections = maps[world]; /* sections object */
-      console.log(sections);
       /* Iterate through each section key */
       Object.keys(sections).forEach(section => {
         const users = maps[world][section]; /* users object */
@@ -104,7 +98,7 @@ router.get("/getCurrentWorldStatus", (req, res) => {
           if (player_id === id) {
             jsonResult.push({
               stage: section,
-              score: maps[world][section][id]["score"]
+              stars: maps[world][section][id]["stars"]
             });
           }
         });
@@ -129,7 +123,7 @@ router.get("/getCurrentWorldStatus", (req, res) => {
   //           if (user_id === id)
   //             jsonResult.push({
   //               stage: section,
-  //               score: maps[world][section][id]["score"]
+  //               stars: maps[world][section][id]["stars"]
   //             });
   //         });
   //       });
@@ -137,14 +131,14 @@ router.get("/getCurrentWorldStatus", (req, res) => {
   //   });
 });
 
-/* POST request to update player score at specified stage */
+/* POST request to update player stars at specified stage */
 router.post("/setSectionStars", (req, res) => {
   let database = req.app.get("database");
 
   /* POST variables */
   const player_id = req.body.playerID;
   const section_id = req.body.sectionID;
-  const score = req.body.score;
+  const stars = req.body.stars;
   const world = section_id.split("-");
 
   /* Create firebase reference */
@@ -152,7 +146,7 @@ router.post("/setSectionStars", (req, res) => {
   let playerRef = database.ref("Players").child(player_id);
 
   /* Asynchronous function */
-  async function setPlayerScore() {
+  async function setPlayerStar() {
     const snap = await userRef.once("value");
     /* JSON object for users */
     const users = snap.val();
@@ -164,24 +158,24 @@ router.post("/setSectionStars", (req, res) => {
     /* No user has attempted this stage */
     if (!(section_id in users)) {
       Object.keys(players).forEach(child => {
-        if (child === "score") {
-          var totalScore = parseInt(players[child]);
-          var newScore = totalScore + parseInt(score);
+        if (child === "stars") {
+          let totalStars = parseInt(players[child]);
+          let newStars = totalStars + parseInt(stars);
           const newPlayerRecord = userRef.child(section_id).child(player_id);
 
-          /* Insert player stage score */
+          /* Insert player stage stars */
           newPlayerRecord.set({
-            score: score.toString()
+            stars: stars.toString()
           });
-          /* Update specified player total score */
+          /* Update specified player total stars achieved */
 
           playerRef.update({
-            score: newScore.toString()
+            stars: newStars.toString()
           });
         }
       });
     } else if (section_id in users) {
-      /* User has yet to attempt stage */
+      /* User has yet to attempt the stage */
       let userRef = database
         .ref("Maps")
         .child("World-" + world[0])
@@ -192,41 +186,41 @@ router.post("/setSectionStars", (req, res) => {
 
       if (!(player_id in users)) {
         Object.keys(players).forEach(child => {
-          if (child === "score") {
-            let totalScore = parseInt(players[child]);
-            let newScore = totalScore + parseInt(score);
+          if (child === "stars") {
+            let totalStars = parseInt(players[child]);
+            let newStars = totalStars + parseInt(stars);
 
             userRef.child(player_id).update({
-              score: score.toString()
+              stars: stars.toString()
             });
 
-            /* Update specified player total score */
+            /* Update specified player total stars */
             playerRef.update({
-              score: newScore.toString()
+              stars: newStars.toString()
             });
           }
         });
       } else {
-        /* Improvement in score in user attempt */
+        /* Improvement in stars achieved in user attempt */
         Object.keys(users).forEach(child => {
           if (child === player_id) {
-            let currentScore = parseInt(users[child].score);
-            let diffInScore = parseInt(score) - currentScore;
+            let currentStars = parseInt(users[child].stars);
+            let diffInStars = parseInt(stars) - currentStars;
 
             Object.keys(players).forEach(child => {
-              if (child === "score") {
-                let totalScore = parseInt(players[child]);
-                let newScore = totalScore + diffInScore;
+              if (child === "stars") {
+                let totalStars = parseInt(players[child]);
+                let newStars = totalStars + diffInStars;
 
-                if (diffInScore > 0) {
-                  /* Update specified player stage score */
+                if (diffInStars > 0) {
+                  /* Update specified player star achieved in the stage */
                   userRef.child(player_id).update({
-                    score: score.toString()
+                    stars: stars.toString()
                   });
 
-                  /* Update specified player total score */
+                  /* Update specified player total stars achieved */
                   playerRef.update({
-                    score: newScore.toString()
+                    stars: newStars.toString()
                   });
                 }
               }
@@ -236,7 +230,7 @@ router.post("/setSectionStars", (req, res) => {
       }
     }
   }
-  setPlayerScore();
+  setPlayerStar();
   res.end("Updates done!");
 });
 
