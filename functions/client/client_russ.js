@@ -1,14 +1,14 @@
-const request = require("request");
+// const request = require("request");
 
-//========================Upload questions==================================
-var queryText = {
-  worldID: "World-1",
-  section: "1-1",
-  difficulty: "hard",
-  questions: "What is log(base 2) 16",
-  options: [3, 4, 7, 1],
-  answer: 0
-};
+// //========================Upload questions==================================
+// var queryText = {
+//   worldID: "World-2",
+//   section: "1-1",
+//   difficulty: "hard",
+//   questions: "What is log(base 2) 40",
+//   options: [3, 4, 7, 1],
+//   answer: 0
+// };
 
 const optionInitializeQuestions = {
   method: "POST",
@@ -21,8 +21,8 @@ const optionInitializeQuestions = {
   body: JSON.stringify(queryText)
 };
 
-//========================Get Stars /player/world==================================
-//https://us-central1-complement-4254e.cloudfunctions.net/app/russ/getStar
+// //========================Get Stars /player/world==================================
+// //https://us-central1-complement-4254e.cloudfunctions.net/app/russ/getStar
 
 const optionGetStars = {
   method: "GET",
@@ -45,6 +45,6 @@ const optionGetQuestionSet = {
   }
 };
 
-request(optionGetStars, function(error, response, body) {
-  console.log(response.body);
-});
+// request(optionInitializeQuestions, function(error, response, body) {
+//   console.log(response.body);
+// });

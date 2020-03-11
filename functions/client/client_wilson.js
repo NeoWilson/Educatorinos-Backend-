@@ -1,15 +1,27 @@
-const request = require("request");
+// const request = require('request')
 
-const optionGetWorldId = {
-  method: "GET",
-  url:
-    "http://localhost:5001/complement-4254e/us-central1/app/wilson/getWorldIds",
-  headers: {
-    Authorization: "Basic ",
-    "Content-Type": "application/json;charset=utf-8"
-  },
-};
+// //========================GET Request for GetWorldIds================================== 
+// const optionGetWorldIds = {
+//     method: "GET",
+//     url: "http://localhost:5001/complement-4254e/us-central1/app/Wilson/getWorldIds",
+   
+//     headers: {
+//         "Authorization": "Basic ",
+//         "Content-Type": "multipart/form-data"
+//     }
+// };
 
-request(optionGetWorldId, function(error, response, body) {
-  console.log(response.body);
-});
+//========================GET Request for GetGlobalLeaderboard================================== 
+// const optionGetGlobalLeaderboard = {
+//     method: "GET",
+//     url: "http://localhost:5001/complement-4254e/us-central1/app/Wilson/getGlobalLeaderboard",
+   
+//     headers: {
+//         "Authorization": "Basic ",
+//         "Content-Type": "multipart/form-data"
+//     }
+// };
+
+// request(optionGetGlobalLeaderboard, function (error, response, body){
+//     console.log(response.body);
+// })

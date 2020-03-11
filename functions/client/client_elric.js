@@ -42,9 +42,9 @@ const optionPostUpdateSectionStars = {
 
 /* POST request to create user account */
 var queryText = {
-  playerID: "U1720925C",
-  playerName: "Elric",
-  playerClass: "TSP4"
+  playerID: "U1720526FC",
+  playerName: "Russell",
+  playerClass: "TSP8"
 };
 
 const optionPostCreatePlayerAccount = {

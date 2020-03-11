@@ -17,7 +17,8 @@ router.post("/createPlayerAccount", (req, res) => {
     name: playerName,
     stars: "0",
     medals: "0",
-    current_progress: "1-1"
+    current_progress: "1-1",
+    profile_url: "gs://complement-4254e.appspot.com/NoAvatar.png"
   });
   res.end("Account created");
 });
@@ -75,7 +76,7 @@ router.get("/getCurrentWorldStatus", (req, res) => {
   let database = req.app.get("database");
   let mapRef = database.ref("Maps");
 
-  let jsonResult = {};
+  let jsonResult = [];
 
   // Retrieving playerID under URL query string
   const player_id = req.query.playerID;
