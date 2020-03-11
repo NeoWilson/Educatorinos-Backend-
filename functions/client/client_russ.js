@@ -2,17 +2,17 @@ const request = require("request");
 
 //========================Upload questions==================================
 var queryText = {
-  worldID: "World-1",
+  worldID: "World-2",
   section: "1-1",
   difficulty: "hard",
-  questions: "What is log(base 2) 16",
+  questions: "What is log(base 2) 40",
   options: [3, 4, 7, 1],
   answer: 0
 };
 
 const optionInitializeQuestions = {
   method: "POST",
-  url: "http://localhost:5001/complement-4254e/us-central1/app/addQuestion",
+  url: "http://localhost:5001/complement-4254e/us-central1/app/russ/addQuestion",
   headers: {
     Authorization: "Basic ",
     "Content-Type": "application/json;charset=utf-8"
@@ -42,6 +42,6 @@ const optionGetQuestionSet = {
   },
 };
 
-request(optionGetStars, function(error, response, body) {
+request(optionInitializeQuestions, function(error, response, body) {
   console.log(response.body);
 });
