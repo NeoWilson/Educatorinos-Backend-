@@ -75,7 +75,7 @@ router.get("/getCurrentWorldStatus", (req, res) => {
   let database = req.app.get("database");
   let mapRef = database.ref("Maps");
 
-  let jsonResult = [];
+  let jsonResult = {};
 
   // Retrieving playerID under URL query string
   const player_id = req.query.playerID;

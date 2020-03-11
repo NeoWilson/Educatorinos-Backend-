@@ -12,7 +12,8 @@ var queryText = {
 
 const optionInitializeQuestions = {
   method: "POST",
-  url: "http://localhost:5001/complement-4254e/us-central1/app/addQuestion",
+  url:
+    "http://localhost:5001/complement-4254e/us-central1/app/russ/addQuestion",
   headers: {
     Authorization: "Basic ",
     "Content-Type": "application/json;charset=utf-8"
@@ -25,21 +26,23 @@ const optionInitializeQuestions = {
 
 const optionGetStars = {
   method: "GET",
-  url: "https://us-central1-complement-4254e.cloudfunctions.net/app/russ/getStar/?worldID=World-1&playerID=U1720925C",
+  url:
+    "https://us-central1-complement-4254e.cloudfunctions.net/app/russ/getStar/?worldID=World-1&playerID=U1720925C",
   headers: {
     Authorization: "Basic ",
     "Content-Type": "application/json;charset=utf-8"
-  },
+  }
 };
 
 //========================Get question set per section==================================
 const optionGetQuestionSet = {
   method: "GET",
-  url: "http://localhost:5001/complement-4254e/us-central1/app/russ/getques/?worldID=World-1&sectionID=1-1",
+  url:
+    "http://localhost:5001/complement-4254e/us-central1/app/russ/getques/?worldID=World-1&sectionID=1-1",
   headers: {
     Authorization: "Basic ",
     "Content-Type": "application/json;charset=utf-8"
-  },
+  }
 };
 
 request(optionGetStars, function(error, response, body) {

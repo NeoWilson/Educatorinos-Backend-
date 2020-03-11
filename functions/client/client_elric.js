@@ -76,6 +76,6 @@ const optionPostCreateTeacherAccount = {
   body: JSON.stringify(queryText)
 };
 
-request(optionPostUpdateSectionStars, function(error, response, body) {
+request(optionGetStageProgress, function(error, response, body) {
   console.log(response.body);
 });
