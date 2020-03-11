@@ -1,5 +1,5 @@
-const express = require('express')
-const router = express.Router()
+const express = require("express");
+const router = express.Router();
 
 router.get("/getWorldIds", (req,res)=>{
 	let database = req.app.get('database');
@@ -26,6 +26,9 @@ router.get("/getGlobalLeaderboard", (req,res)=>{
 		})
 		res.end(JSON.stringify(array));
     });
+    res.setHeader("Content-Type", "application/json");
+    res.end(JSON.stringify(array));
+    return;
 });
 
-module.exports = router
+module.exports = router;
