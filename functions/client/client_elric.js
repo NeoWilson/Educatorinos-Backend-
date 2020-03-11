@@ -1,5 +1,17 @@
 const request = require("request");
 
+/* POST request to generate records for each world */
+const optionPostCreateWorld = {
+  method: "POST",
+  url:
+    "http://localhost:5001/complement-4254e/us-central1/app/elric/createWorld",
+  headers: {
+    Authorization: "Basic ",
+    "Content-Type": "application/json;charset=utf-8"
+  }
+};
+
+/* GET request to retrieve player current progress */
 const optionGetStageProgress = {
   method: "GET",
   url:
@@ -10,14 +22,14 @@ const optionGetStageProgress = {
   }
 };
 
-/* POST request to update player score at specified stage */
+/* POST request to update player stars at specified stage */
 var queryText = {
   playerID: "U1720925C",
-  sectionID: "1-9",
-  score: "2"
+  sectionID: "1-7",
+  stars: "1"
 };
 
-const optionPostUpdateSectionScore = {
+const optionPostUpdateSectionStars = {
   method: "POST",
   url:
     "http://localhost:5001/complement-4254e/us-central1/app/elric/setSectionStars",
@@ -30,15 +42,15 @@ const optionPostUpdateSectionScore = {
 
 /* POST request to create user account */
 var queryText = {
-  playerID: "U1720526FC",
-  playerName: "Russell",
-  playerClass: "TSP8"
+  playerID: "U1720925C",
+  playerName: "Elric",
+  playerClass: "TSP4"
 };
 
-const optionPostCreateAccount = {
+const optionPostCreatePlayerAccount = {
   method: "POST",
   url:
-    "http://localhost:5001/complement-4254e/us-central1/app/elric/createAccount",
+    "http://localhost:5001/complement-4254e/us-central1/app/elric/createPlayerAccount",
   headers: {
     Authorization: "Basic ",
     "Content-Type": "application/json;charset=utf-8"
@@ -64,6 +76,6 @@ const optionPostCreateTeacherAccount = {
   body: JSON.stringify(queryText)
 };
 
-request(optionGetStageProgress, function(error, response, body) {
+request(optionPostUpdateSectionStars, function(error, response, body) {
   console.log(response.body);
 });
