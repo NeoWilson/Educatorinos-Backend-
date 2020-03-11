@@ -17,112 +17,6 @@ admin.initializeApp({
 });
 const database = admin.database();
 
-<<<<<<< HEAD
-//===================================Test GET Request=========================================
-
-/* GET request */
-app.get("/test", (req, res)=>{
-    // res.send("hi");
-    res.end("bye");
-});
-
-//============================getWorldIds fetch from Firebase===================================
-
-app.get("/getWorldIds", (req,res)=>{
-
-	let databaseRef = database.ref("Maps");
-
-	databaseRef.once("value", function(snapshot) {
-		var array = [];
-		snapshot.forEach(function(Snapshot) {
-			array.push(Snapshot.key);
-		});
-		res.setHeader("Content-Type", "application/json");
-		res.end(JSON.stringify(array));
-		return;
-    });
-});
-
-//============================getQuestions fetch from Firebase===================================
-
-app.get("/getQuestions", (req,res)=>{
-
-	let databaseRef = database.ref("Maps");
-
-	databaseRef.once("value", function(snapshot) {
-		var array = [];
-		snapshot.forEach(function(Snapshot) {
-            array.push(Snapshot.key + ": " + Snapshot.child("Questions").val());
-        });
-        
-    //databaseRef.orderByDifficulty("Difficulty")
-
-		res.setHeader("Content-Type", "application/json");
-		res.end(JSON.stringify(array));
-		return;
-    });
-});
-
-//============================getStars fetch from Firebase===================================
-
-app.get("/getStars", (req,res)=>{
-
-	let databaseRef = database.ref("Maps");
-
-	databaseRef.once("value", function(snapshot) {
-		var array = [];
-		snapshot.forEach(function(Snapshot) {
-            if()
-            array.push(Snapshot.key + ": " + Snapshot.child("score").val());
-        });
-
-		res.setHeader("Content-Type", "application/json");
-		res.end(JSON.stringify(array));
-		return;
-    });
-});
-
-//============================Test upload to Firebase===================================
-
-/* POST request */
-app.post("/sendToFirebase", (req, res) => { 
-    let databaseRef = database.ref("structure");
-    var usersRef = databaseRef.child("users");
-    usersRef.set({
-    alanisawesome: {
-        date_of_birth: "June 23, 1912",
-        full_name: "Alan Turing"
-    },
-    gracehop: {
-        date_of_birth: "December 9, 1906",
-        full_name: "Grace Hopper",
-        address: "",
-        lala:"adsa"
-    }
-    });
-    res.end("upload complete");
-});
-
-//============================Test fetch from Firebase===================================
-
-app.post("/getFromFirebase", (req,res)=>{
-
-	let databaseRef = database.ref("structure");
-	databaseRef = databaseRef.child("users");
-
-	databaseRef.once("value", function(snapshot) {
-		var array = [];
-		snapshot.forEach(function(childSnapshot) {
-			array.push(childSnapshot);
-		});
-		res.setHeader("Content-Type", "application/json");
-		res.end(JSON.stringify(array));
-		return;
-	});
-    
-});
-
-=======
 app.set('database', database);
 
 app.use('/russ', russRouter);
@@ -131,7 +25,6 @@ app.use('/elric', elricRouter);
 app.use('/wilson', wilsonRouter);
 app.use('/wy', wanyingRouter);
 
->>>>>>> 7801acc188347568cad5426cd7d155fdac34a857
 exports.app = functions.https.onRequest(app);
 
 //======================================================================================
