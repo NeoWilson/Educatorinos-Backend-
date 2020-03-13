@@ -11,21 +11,21 @@ const optionPostCreateWorld = {
   }
 };
 
-/* GET request to retrieve player current progress */
+/* GET request to retrieve student current progress */
 const optionGetStageProgress = {
   method: "GET",
   url:
-    "https://us-central1-complement-4254e.cloudfunctions.net/app/elric/getCurrentWorldStatus/?playerID=U1720925C",
+    "https://us-central1-complement-4254e.cloudfunctions.net/app/elric/getCurrentWorldStatus/?matric=U1720925C",
   headers: {
     Authorization: "Basic ",
     "Content-Type": "application/json;charset=utf-8"
   }
 };
 
-/* POST request to update player stars at specified stage */
+/* POST request to update student stars at specified stage */
 var queryText = {
-  playerID: "U1720925C",
-  sectionID: "1-7",
+  matric: "U1720925C",
+  sectionID: "1-1",
   stars: "1"
 };
 
@@ -40,17 +40,17 @@ const optionPostUpdateSectionStars = {
   body: JSON.stringify(queryText)
 };
 
-/* POST request to create user account */
+/* POST request to create student account */
 var queryText = {
-  playerID: "U1720526FC",
-  playerName: "Russell",
-  playerClass: "TSP8"
+  matric: "U1720526FC",
+  name: "Russell",
+  class: "TSP8"
 };
 
-const optionPostCreatePlayerAccount = {
+const optionPostCreateStudentAccount = {
   method: "POST",
   url:
-    "http://localhost:5001/complement-4254e/us-central1/app/elric/createPlayerAccount",
+    "http://localhost:5001/complement-4254e/us-central1/app/elric/createStudentAccount",
   headers: {
     Authorization: "Basic ",
     "Content-Type": "application/json;charset=utf-8"
@@ -76,6 +76,6 @@ const optionPostCreateTeacherAccount = {
   body: JSON.stringify(queryText)
 };
 
-request(optionGetStageProgress, function(error, response, body) {
+request(optionPostUpdateSectionStars, function(error, response, body) {
   console.log(response.body);
 });
