@@ -42,7 +42,7 @@ const optionPostUpdateSectionStars = {
 
 /* POST request to create student account */
 var queryText = {
-  matric: "U1720526FC",
+  matric: "U1720526F",
   name: "Russell",
   class: "TSP8"
 };
@@ -76,6 +76,6 @@ const optionPostCreateTeacherAccount = {
   body: JSON.stringify(queryText)
 };
 
-request(optionPostUpdateSectionStars, function(error, response, body) {
+request(optionPostCreateWorld, function(error, response, body) {
   console.log(response.body);
 });

@@ -70,7 +70,7 @@ router.post("/createWorld", (req, res) => {
   res.end("World created");
 });
 
-/* GET request to retrieve player current stage progress */
+/* GET request to retrieve student current stage progress */
 router.get("/getCurrentWorldStatus", (req, res) => {
   /* Firebase reference */
   let database = req.app.get("database");
@@ -132,7 +132,7 @@ router.get("/getCurrentWorldStatus", (req, res) => {
   //   });
 });
 
-/* POST request to update player stars at specified stage */
+/* POST request to update student achieved stars at specified stage */
 router.post("/setSectionStars", (req, res) => {
   let database = req.app.get("database");
 
