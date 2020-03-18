@@ -11,7 +11,7 @@
 //     }
 // };
 
-//========================GET Request for GetGlobalLeaderboard================================== 
+// //========================GET Request for GetGlobalLeaderboard================================== 
 // const optionGetGlobalLeaderboard = {
 //     method: "GET",
 //     url: "http://localhost:5001/complement-4254e/us-central1/app/Wilson/getGlobalLeaderboard",

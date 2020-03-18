@@ -17,18 +17,39 @@ app.use(express.urlencoded({ extended: false }))
 admin.initializeApp({
     // credential: admin.credential.cert(serviceAccount),
     credential: admin.credential.applicationDefault(),
-    databaseURL: "https://complement-4254e.firebaseio.com"
+    databaseURL: "https://complement-4254e.firebaseio.com",
+    storageBucket: "complement-4254e.appspot.com"
 });
 
 const database = admin.database();
+const storage = admin.storage();
+const bucket = storage.bucket();
 
 app.set('database', database);
+app.set('bucket', bucket);
 
 app.use('/russ', russRouter);
 app.use('/test', testRouter);
 app.use('/elric', elricRouter);
 app.use('/wilson', wilsonRouter);
 app.use('/wy', wanyingRouter);
+
+// async function genAvatarUrl(avatarid){
+	
+// 	let filename = avatarid + ".jpg"
+// 	let file = bucket.file(filename);
+	
+// 	await file.makePublic();
+
+// 	return `https://storage.googleapis.com/complement-4254e.appspot.com/${filename}`
+	
+// }
+
+// for (let i = 1; i< 7;i++){
+//     genAvatarUrl("Avatar"+i).then((val)=>{
+//         console.log(val);
+//     })
+// }
 
 exports.app = functions.https.onRequest(app);
 
