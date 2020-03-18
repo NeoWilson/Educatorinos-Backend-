@@ -16,7 +16,7 @@ router.get("/getWorldIds", (req,res)=>{
 
 router.get("/getGlobalLeaderboard", (req,res)=>{
 	let database = req.app.get('database');
-	let databaseRef = database.ref("Players");
+	let databaseRef = database.ref("Students");
 
 	databaseRef.once("value", function(snapshot) {
 		var dict = {};

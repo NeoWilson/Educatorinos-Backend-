@@ -18,7 +18,7 @@ router.post("/createStudentAccount", (req, res) => {
     stars: "0",
     medals: "0",
     current_progress: "1-1",
-    avatar_url: "gs://complement-4254e.appspot.com/NoAvatar.png"
+    avatar_url: "NoAvatar"
   });
   res.end("Account created");
 });
