@@ -12,10 +12,22 @@ const optionPostCreateWorld = {
 };
 
 /* GET request to retrieve student current progress */
+const optionGetProgress = {
+  method: "GET",
+  url:
+    "https://us-central1-complement-4254e.cloudfunctions.net/app/elric/getWorldStatus/?matric=U1720925C",
+  headers: {
+    Authorization: "Basic ",
+    "Content-Type": "application/json;charset=utf-8"
+  }
+};
+
+/* GET request to retrieve student current progress */
 const optionGetStageProgress = {
   method: "GET",
   url:
-    "https://us-central1-complement-4254e.cloudfunctions.net/app/elric/getCurrentWorldStatus/?matric=U1720925C",
+    "http://localhost:5001/complement-4254e/us-central1/app/elric/getCurrentWorldStatus/?matric=U1720925C&worldID=World-2",
+  // "https://us-central1-complement-4254e.cloudfunctions.net/app/elric/getCurrentWorldStatus/?matric=U1720925C&worldID=World-1",
   headers: {
     Authorization: "Basic ",
     "Content-Type": "application/json;charset=utf-8"
@@ -86,6 +98,6 @@ const optionCheckValidUser = {
   }
 };
 
-request(optionCheckValidUser, function(error, response, body) {
+request(optionGetStageProgress, function(error, response, body) {
   console.log(response.body);
 });
