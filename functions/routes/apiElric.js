@@ -237,4 +237,29 @@ router.post("/setSectionStars", (req, res) => {
   res.end("Updates done!");
 });
 
+/* GET Request to check for valid user */
+router.get("/checkValidStudent", (req, res) => {
+  /* Firebase reference */
+  let database = req.app.get("database");
+  let studentRef = database.ref("Students");
+
+  // Retrieving student matriculation number under URL query string
+  const studentMatric = req.query.matric;
+
+  /* Asynchronous function */
+  async function checkValidStudent() {
+    // Do all your await calls inside this function
+    const snap = await studentRef.once("value");
+
+    /* JSON object for users */
+    const users = snap.val();
+
+    if (studentMatric in users) {
+      res.end("Valid");
+    } else {
+      res.end("Invalid");
+    }
+  }
+  checkValidStudent();
+});
 module.exports = router;

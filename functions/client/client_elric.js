@@ -76,6 +76,16 @@ const optionPostCreateTeacherAccount = {
   body: JSON.stringify(queryText)
 };
 
-request(optionPostCreateWorld, function(error, response, body) {
+const optionCheckValidUser = {
+  method: "GET",
+  url:
+    "http://localhost:5001/complement-4254e/us-central1/app/elric/checkValidStudent/?matric=U1722994C",
+  headers: {
+    Authorization: "Basic ",
+    "Content-Type": "application/json;charset=utf-8"
+  }
+};
+
+request(optionCheckValidUser, function(error, response, body) {
   console.log(response.body);
 });
