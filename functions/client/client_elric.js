@@ -26,8 +26,7 @@ const optionGetProgress = {
 const optionGetStageProgress = {
   method: "GET",
   url:
-    "http://localhost:5001/complement-4254e/us-central1/app/elric/getCurrentWorldStatus/?matric=U1720925C&worldID=World-2",
-  // "https://us-central1-complement-4254e.cloudfunctions.net/app/elric/getCurrentWorldStatus/?matric=U1720925C&worldID=World-1",
+    "https://us-central1-complement-4254e.cloudfunctions.net/app/elric/getCurrentWorldStatus/?matric=U1720925C&worldID=World-1",
   headers: {
     Authorization: "Basic ",
     "Content-Type": "application/json;charset=utf-8"
@@ -91,13 +90,13 @@ const optionPostCreateTeacherAccount = {
 const optionCheckValidUser = {
   method: "GET",
   url:
-    "http://localhost:5001/complement-4254e/us-central1/app/elric/checkValidStudent/?matric=U1722994C",
+    "https://us-central1-complement-4254e.cloudfunctions.net/app/elric/checkValidStudent/?matric=U1720925C",
   headers: {
     Authorization: "Basic ",
     "Content-Type": "application/json;charset=utf-8"
   }
 };
 
-request(optionGetStageProgress, function(error, response, body) {
+request(optionCheckValidUser, function(error, response, body) {
   console.log(response.body);
 });
