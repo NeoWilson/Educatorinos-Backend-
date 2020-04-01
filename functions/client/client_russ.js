@@ -45,6 +45,6 @@
 //   }
 // };
 
-// request(optionInitializeQuestions, function(error, response, body) {
+// request(optionGetStars, function(error, response, body) {
 //   console.log(response.body);
 // });
