@@ -17,18 +17,13 @@ router.get("/getWorldIds", (req,res)=>{
 router.get("/getGlobalLeaderboard", (req,res)=>{
 	let database = req.app.get('database');
 	let databaseRef = database.ref("Players");
-
 	databaseRef.once("value", function(snapshot) {
-		var array = [];
+		var dict = {};
 		snapshot.forEach(function(Snapshot) {
-			array.push(Snapshot.key);
-			array.push(Snapshot.val());
+			dict[Snapshot.key] = Snapshot.val();
 		})
-		res.end(JSON.stringify(array));
+		res.end(JSON.stringify(dict));
     });
-    res.setHeader("Content-Type", "application/json");
-    res.end(JSON.stringify(array));
-    return;
 });
 
 module.exports = router;
