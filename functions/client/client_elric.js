@@ -87,7 +87,7 @@
 //   body: JSON.stringify(queryText)
 // };
 
-// const optionCheckValidUser = {
+// const optionCheckValidStudent = {
 //   method: "GET",
 //   url:
 //     "https://us-central1-complement-4254e.cloudfunctions.net/app/elric/checkValidStudent/?matric=U1720925C",
@@ -97,6 +97,16 @@
 //   }
 // };
 
-// request(optionCheckValidUser, function(error, response, body) {
+// const optionCheckValidTeacher = {
+//   method: "GET",
+//   url:
+//     "https://us-central1-complement-4254e.cloudfunctions.net/app/elric/checkValidTeacher/?teacher_id=E1507788C",
+//   headers: {
+//     Authorization: "Basic ",
+//     "Content-Type": "application/json;charset=utf-8"
+//   }
+// };
+
+// request(optionCheckValidTeacher, function(error, response, body) {
 //   console.log(response.body);
 // });

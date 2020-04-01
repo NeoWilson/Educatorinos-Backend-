@@ -273,7 +273,7 @@ router.post("/setSectionStars", (req, res) => {
   res.end("Updates done!");
 });
 
-/* GET Request to check for valid user */
+/* GET Request to check for valid student */
 router.get("/checkValidStudent", (req, res) => {
   /* Firebase reference */
   let database = req.app.get("database");
@@ -297,5 +297,31 @@ router.get("/checkValidStudent", (req, res) => {
     }
   }
   checkValidStudent();
+});
+
+/* GET Request to check for valid teacher */
+router.get("/checkValidTeacher", (req, res) => {
+  /* Firebase reference */
+  let database = req.app.get("database");
+  let teacherRef = database.ref("Teachers");
+
+  // Retrieving teacher id under URL query string
+  const teacherId = req.query.teacher_id;
+  console.log(teacherId);
+  /* Asynchronous function */
+  async function checkValidTeacher() {
+    // Do all your await calls inside this function
+    const snap = await teacherRef.once("value");
+
+    /* JSON object for users */
+    const users = snap.val();
+
+    if (teacherId in users) {
+      res.end(users[teacherId].class);
+    } else {
+      res.end("Invalid");
+    }
+  }
+  checkValidTeacher();
 });
 module.exports = router;
