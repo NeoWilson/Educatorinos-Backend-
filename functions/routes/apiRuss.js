@@ -43,7 +43,7 @@ function constructpayload(pid, wid, obj) {
 router.get("/getStar", (req, res) => {
   let database = req.app.get("database");
   // let request = req.body
-  let playerID = req.query.playerID;
+  let matric = req.query.matric;
   let worldID = req.query.worldID;
   let payload = "";
 
@@ -51,7 +51,7 @@ router.get("/getStar", (req, res) => {
 
   databaseRef.once("value", function(snapshot) {
     let worldObj = snapshot.val();
-    payload = constructpayload(playerID, worldID, worldObj);
+    payload = constructpayload(matric, worldID, worldObj);
     res.json(payload);
   });
 });
@@ -71,5 +71,8 @@ router.get("/getques", (req, res) => {
     res.json(queslist);
   });
 });
+
+
+
 
 module.exports = router;

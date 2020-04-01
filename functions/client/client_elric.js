@@ -11,21 +11,32 @@
 //   }
 // };
 
-// /* GET request to retrieve player current progress */
-// const optionGetStageProgress = {
+// /* GET request to retrieve student current progress */
+// const optionGetProgress = {
 //   method: "GET",
 //   url:
-//     "https://us-central1-complement-4254e.cloudfunctions.net/app/elric/getCurrentWorldStatus/?playerID=U1720925C",
+//     "https://us-central1-complement-4254e.cloudfunctions.net/app/elric/getWorldStatus/?matric=U1720925C",
 //   headers: {
 //     Authorization: "Basic ",
 //     "Content-Type": "application/json;charset=utf-8"
 //   }
 // };
 
-// /* POST request to update player stars at specified stage */
+// /* GET request to retrieve student current progress */
+// const optionGetStageProgress = {
+//   method: "GET",
+//   url:
+//     "https://us-central1-complement-4254e.cloudfunctions.net/app/elric/getCurrentWorldStatus/?matric=U1720925C&worldID=World-1",
+//   headers: {
+//     Authorization: "Basic ",
+//     "Content-Type": "application/json;charset=utf-8"
+//   }
+// };
+
+// /* POST request to update student stars at specified stage */
 // var queryText = {
-//   playerID: "U1720925C",
-//   sectionID: "1-7",
+//   matric: "U1720925C",
+//   sectionID: "1-1",
 //   stars: "1"
 // };
 
@@ -40,17 +51,17 @@
 //   body: JSON.stringify(queryText)
 // };
 
-// /* POST request to create user account */
+// /* POST request to create student account */
 // var queryText = {
-//   playerID: "U1720925C",
-//   playerName: "Elric",
-//   playerClass: "TSP4"
+//   matric: "U1720526F",
+//   name: "Russell",
+//   class: "TSP8"
 // };
 
-// const optionPostCreatePlayerAccount = {
+// const optionPostCreateStudentAccount = {
 //   method: "POST",
 //   url:
-//     "http://localhost:5001/complement-4254e/us-central1/app/elric/createPlayerAccount",
+//     "http://localhost:5001/complement-4254e/us-central1/app/elric/createStudentAccount",
 //   headers: {
 //     Authorization: "Basic ",
 //     "Content-Type": "application/json;charset=utf-8"
@@ -76,6 +87,16 @@
 //   body: JSON.stringify(queryText)
 // };
 
-// request(optionPostUpdateSectionStars, function(error, response, body) {
+// const optionCheckValidUser = {
+//   method: "GET",
+//   url:
+//     "https://us-central1-complement-4254e.cloudfunctions.net/app/elric/checkValidStudent/?matric=U1720925C",
+//   headers: {
+//     Authorization: "Basic ",
+//     "Content-Type": "application/json;charset=utf-8"
+//   }
+// };
+
+// request(optionCheckValidUser, function(error, response, body) {
 //   console.log(response.body);
 // });
