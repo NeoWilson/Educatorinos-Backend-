@@ -72,7 +72,64 @@ router.get("/getques", (req, res) => {
   });
 });
 
+//==========Create Arena Questions==============
+router.post("/addArenaQuestion", (req, res) => {
+  let database = req.app.get("database");
+  let request = req.body;
+  
+  let creator = request.creator;
+  let question = request.questions;
+  let options = request.options;
+  let answer = request.answer;
+  let attempts = request.attempts;
 
+  let databaseRef = database.ref("Arena");
+  databaseRef = databaseRef.child("Questions");
+
+  databaseRef.push({
+    question: question,
+    options: options,
+    answer: answer,
+    creator: creator,
+    attempts: attempts,
+  });
+  res.end("Arena upload complete");
+});
+
+//==========Set Arena Question Score==============
+
+function getAttempts(playerRef) {
+
+  return playerRef.once("value").then(function(snapshot) {
+    let quesObj = snapshot.val();
+    let len_of_attempts = Object.keys(quesObj).length; 
+    return len_of_attempts;
+  });
+}
+
+router.post("/setArenaQuestionScore", (req, res) => {
+  let database = req.app.get("database");
+  let request = req.body;
+  
+  let qid = request.questionID;
+  let matric = request.matric;
+  let medal = request.medal;
+
+  let databaseRef = database.ref("Arena");
+  let questionRef = databaseRef.child("Questions");
+  let qidRef = questionRef.child(qid);
+  let playerRef = qidRef.child("players");
+  let matricRef = playerRef.child(matric);
+  
+  matricRef.set({medal: medal});
+
+  getAttempts(playerRef).then((attempt)=>{
+    qidRef.update({attempts:attempt})
+  })
+
+  res.json("ok")
+  
+});
 
 
 module.exports = router;
