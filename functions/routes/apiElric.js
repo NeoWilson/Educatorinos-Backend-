@@ -18,7 +18,7 @@ router.post("/createStudentAccount", (req, res) => {
     stars: "0",
     medals: "0",
     current_progress: "1-1",
-    avatar_url: "gs://complement-4254e.appspot.com/NoAvatar.png"
+    avatar_url: "NoAvatar"
   });
   res.end("Account created");
 });
@@ -70,8 +70,8 @@ router.post("/createWorld", (req, res) => {
   res.end("World created");
 });
 
-/* GET request to retrieve player current stage progress */
-router.get("/getCurrentWorldStatus", (req, res) => {
+/* GET request to retrieve student current stage progress */
+router.get("/getWorldStatus", (req, res) => {
   /* Firebase reference */
   let database = req.app.get("database");
   let mapRef = database.ref("Maps");
@@ -132,7 +132,43 @@ router.get("/getCurrentWorldStatus", (req, res) => {
   //   });
 });
 
-/* POST request to update player stars at specified stage */
+/* GET request to retrieve student current stage progress */
+router.get("/getCurrentWorldStatus", (req, res) => {
+  /* Firebase reference */
+  let database = req.app.get("database");
+  let worldRef = database.ref("Maps").child(req.query.worldID);
+
+  let jsonResult = [];
+
+  // Retrieving student matriculation number under URL query string
+  const studentMatric = req.query.matric;
+
+  /* Asynchronous function */
+  async function getCurrentPlayerStatus() {
+    // Do all your await calls inside this function
+    const snap = await worldRef.once("value");
+    /* JSON object for worlds */
+    const worlds = snap.val();
+
+    /* Iterate through each section key */
+    Object.keys(worlds).forEach(section => {
+      const users = worlds[section]; /* users object */
+      /* Iterate through each user_id key */
+      Object.keys(users).forEach(id => {
+        if (studentMatric === id) {
+          jsonResult.push({
+            stage: section,
+            stars: worlds[section][id]["stars"]
+          });
+        }
+      });
+    });
+    res.end(JSON.stringify(jsonResult));
+  }
+  getCurrentPlayerStatus();
+});
+
+/* POST request to update student achieved stars at specified stage */
 router.post("/setSectionStars", (req, res) => {
   let database = req.app.get("database");
 
@@ -237,4 +273,29 @@ router.post("/setSectionStars", (req, res) => {
   res.end("Updates done!");
 });
 
+/* GET Request to check for valid user */
+router.get("/checkValidStudent", (req, res) => {
+  /* Firebase reference */
+  let database = req.app.get("database");
+  let studentRef = database.ref("Students");
+
+  // Retrieving student matriculation number under URL query string
+  const studentMatric = req.query.matric;
+
+  /* Asynchronous function */
+  async function checkValidStudent() {
+    // Do all your await calls inside this function
+    const snap = await studentRef.once("value");
+
+    /* JSON object for users */
+    const users = snap.val();
+
+    if (studentMatric in users) {
+      res.end(users[studentMatric].class);
+    } else {
+      res.end("Invalid");
+    }
+  }
+  checkValidStudent();
+});
 module.exports = router;
