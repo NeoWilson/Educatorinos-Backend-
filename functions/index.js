@@ -13,10 +13,10 @@ app.use(require("cors")({ origin: true, credentials: true }));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
-var serviceAccount = require("../functions/private/complement-4254e-firebase-adminsdk-i34zx-589c173735.json");
+// var serviceAccount = require("../functions/private/complement-4254e-firebase-adminsdk-i34zx-589c173735.json");
 admin.initializeApp({
-  credential: admin.credential.cert(serviceAccount),
-  // credential: admin.credential.applicationDefault(),
+  // credential: admin.credential.cert(serviceAccount),
+  credential: admin.credential.applicationDefault(),
   databaseURL: "https://complement-4254e.firebaseio.com",
   storageBucket: "complement-4254e.appspot.com"
 });

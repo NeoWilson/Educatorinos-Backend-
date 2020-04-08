@@ -98,14 +98,16 @@ router.post("/addArenaQuestion", (req, res) => {
 
 //==========Set Arena Question Score==============
 
-function getAttempts(playerRef) {
+// function getAttempts(playerRef) {
 
-  return playerRef.once("value").then(function(snapshot) {
-    let quesObj = snapshot.val();
-    let len_of_attempts = Object.keys(quesObj).length; 
-    return len_of_attempts;
-  });
-}
+//   return playerRef.once("value").then(function(snapshot) {
+//     let quesObj = snapshot.val();
+//     let len_of_attempts = Object.keys(quesObj).length; 
+//     return len_of_attempts;
+//   }).catch((err)=>{
+//     throw new Error(err)
+//   });
+// }
 
 router.post("/setArenaQuestionScore", (req, res) => {
   let database = req.app.get("database");
@@ -123,13 +125,100 @@ router.post("/setArenaQuestionScore", (req, res) => {
   
   matricRef.set({medal: medal});
 
-  getAttempts(playerRef).then((attempt)=>{
-    qidRef.update({attempts:attempt})
+  playerRef.once("value", function(snapshot){
+    let quesObj = snapshot.val();
+    let len_of_attempts = Object.keys(quesObj).length; 
+    qidRef.update({attempts:len_of_attempts})
   })
 
-  res.json("ok")
+  res.json("ok");
+
+  // getAttempts(playerRef).then((attempt)=>{
+  //   qidRef.update({attempts:attempt})
+  //   res.json("Ok");
+  // }).catch((err)=>{
+  //   res.json(err);
+  // })
+
+  
   
 });
+
+//==========Fetch all Arena Question ==============
+
+router.get("/getArenaQuestions", (req, res) => {
+
+  let database = req.app.get("database");
+
+  let databaseRef = database.ref("Arena");
+  databaseRef = databaseRef.child("Questions");
+  
+  databaseRef.once("value", function(snapshot) {
+    let queslist = snapshot.val();
+    let dict = {}
+
+    Object.keys(queslist).forEach(info=>{
+      let jsonObj = {question: queslist[info]['question'], creator: queslist[info]['creator'], 
+                      attempts: queslist[info]['attempts'], players: queslist[info]['players']}
+      dict[info] = jsonObj
+    })
+
+    res.json(dict);
+  });
+});
+
+
+//==========Get Selected Arena Question info ==============
+
+router.get("/getSelectArenaQuestions", (req, res) => {
+  
+  let qid = req.query.questionID;
+  let database = req.app.get("database");
+
+  let databaseRef = database.ref("Arena");
+  databaseRef = databaseRef.child("Questions");
+  databaseRef = databaseRef.child(qid);
+  databaseRef.once("value", function(snapshot) {
+    let quesInfo = snapshot.val();
+    res.json(quesInfo);
+  });
+});
+
+//==========Get All Worlds and Respective Population==============
+
+function getPopulation(worldID, worldObj){
+    
+    let userArr = [];
+    Object.keys(worldObj).forEach(sections=>{
+        let section = worldObj[sections]; 
+        Object.keys(section).forEach(user => {
+          if (userArr.indexOf(user) === -1) {
+            userArr.push(user); 
+          }
+        });
+    })
+
+    let woridPopulationObj = {worldID: worldID, population: userArr.length}
+    return woridPopulationObj;
+}
+
+router.get("/getAllWorldPopulation", (req,res)=>{
+
+  let database = req.app.get("database");
+  let worldRef = database.ref("Maps"); 
+
+  worldRef.once("value", function(snapshot) {
+    let worlds = snapshot.val(); 
+    let worldPopulationArray = []
+    Object.keys(worlds).forEach(world => {
+        let populationObj = getPopulation(world, worlds[world])
+        worldPopulationArray.push(populationObj)
+    });
+    
+    res.json(worldPopulationArray); 
+  });
+
+})
 
 
 module.exports = router;
