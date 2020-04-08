@@ -61,7 +61,7 @@ router.post("/addAssignmentQuestion", (req, res) => {
   let request = req.body;
   
   let creator = request.creator;
-  let question = request.questions;
+  let question = request.question;
   let options = request.options;
   let answer = request.answer;
   let players = request.players;
