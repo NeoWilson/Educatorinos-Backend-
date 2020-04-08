@@ -109,6 +109,36 @@ router.post("/addArenaQuestion", (req, res) => {
 //   });
 // }
 
+function getMedal(matric, database){
+  console.log(matric)
+  let arenaRef = database.ref("Arena").child("Questions")
+  return arenaRef.once("value").then(function(snapshot){
+    let questionObj = snapshot.val();
+    let quesKeys = Object.keys(questionObj);
+    let medalcount = 0
+    for(let i =0; i< quesKeys.length;i++){
+        if ('players' in questionObj[quesKeys[i]]){
+          if (matric in questionObj[quesKeys[i]]['players']){
+            medalcount = medalcount + questionObj[quesKeys[i]]['players'][matric]['medal']
+          }
+        }
+    }
+    return medalcount
+  }).catch((err)=>{
+    throw new Error(err);
+  });
+}
+
+function updateMedal(matric, database){
+  
+  getMedal(matric, database).then((medalcount)=>{
+    let userRef = database.ref("Students").child(matric);
+    userRef.update({medals:medalcount})
+  }).catch((err)=>{
+    userRef.update({medals:0})
+  })
+}
+
 router.post("/setArenaQuestionScore", (req, res) => {
   let database = req.app.get("database");
   let request = req.body;
@@ -124,6 +154,8 @@ router.post("/setArenaQuestionScore", (req, res) => {
   let matricRef = playerRef.child(matric);
   
   matricRef.set({medal: medal});
+
+  updateMedal(matric, database);
 
   playerRef.once("value", function(snapshot){
     let quesObj = snapshot.val();

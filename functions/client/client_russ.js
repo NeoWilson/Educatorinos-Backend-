@@ -1,4 +1,4 @@
-// const request = require("request");
+const request = require("request");
 
 // //========================Upload questions==================================
 // var queryText = {
@@ -67,22 +67,22 @@
 // };
 
 //========================Attempt Questions==================================
-// var queryText = {
-//   questionID: "-M3qYQn6mB-89EIpWSMS",
-//   matric: "U2524567C",
-//   medal: 1
-// };
+var queryText = {
+  questionID: "-M3qYQn6mB-89EIpWDHU",
+  matric: "U1720925C",
+  medal: 0
+};
 
-// const setArenaQuesScore = {
-//   method: "POST",
-//   url:
-//     "http://localhost:5001/complement-4254e/us-central1/app/russ/setArenaQuestionScore",
-//   headers: {
-//     Authorization: "Basic ",
-//     "Content-Type": "application/json;charset=utf-8"
-//   },
-//   body: JSON.stringify(queryText)
-// };
+const setArenaQuesScore = {
+  method: "POST",
+  url:
+    "http://localhost:5001/complement-4254e/us-central1/app/russ/setArenaQuestionScore",
+  headers: {
+    Authorization: "Basic ",
+    "Content-Type": "application/json;charset=utf-8"
+  },
+  body: JSON.stringify(queryText)
+};
 
 //========================Fetch Arena Questions==================================
   
@@ -120,6 +120,6 @@
 //     }
 //   };
 
-// request(setArenaQuesScore, function(error, response, body) {
-//   console.log(response.body);
-// });
+request(setArenaQuesScore, function(error, response, body) {
+  console.log(response.body);
+});
