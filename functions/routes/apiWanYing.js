@@ -52,4 +52,36 @@ router.get("/getLeaderboard", (req, res) => {
   });
 });
 
+
+
+
+//==========Create Assignment Questions==============
+router.post("/addAssignmentQuestion", (req, res) => {
+  let database = req.app.get("database");
+  let request = req.body;
+  
+  let creator = request.creator;
+  let question = request.questions;
+  let options = request.options;
+  let answer = request.answer;
+  let players = request.players;
+
+  let databaseRef = database.ref("Assignment");
+  databaseRef.push({
+    players: players,
+    creator: creator,
+  });
+  databaseRef = databaseRef.child("Questions");
+  databaseRef.push({
+    question: question,
+    options: options,
+    answer: answer,
+  });
+  res.end("Assignment upload complete");
+});
+
+
+
 module.exports = router;
+
+
