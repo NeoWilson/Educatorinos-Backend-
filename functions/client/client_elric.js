@@ -1,4 +1,4 @@
-const request = require("request");
+// const request = require("request");
 
 // /* POST request to generate records for each world */
 // const optionPostCreateWorld = {
@@ -87,28 +87,28 @@ const request = require("request");
 //   body: JSON.stringify(queryText)
 // };
 
-const optionCheckValidStudent = {
-  method: "GET",
-  url:
-    "http://localhost:5001/complement-4254e/us-central1/app/elric/checkValidStudent/?matric=U1720925C",
-  // "https://us-central1-complement-4254e.cloudfunctions.net/app/elric/checkValidStudent/?matric=U1720925C",
-  headers: {
-    Authorization: "Basic ",
-    "Content-Type": "application/json;charset=utf-8",
-  },
-};
+// const optionCheckValidStudent = {
+//   method: "GET",
+//   url:
+//     "http://localhost:5001/complement-4254e/us-central1/app/elric/checkValidStudent/?matric=U1720925C",
+//   // "https://us-central1-complement-4254e.cloudfunctions.net/app/elric/checkValidStudent/?matric=U1720925C",
+//   headers: {
+//     Authorization: "Basic ",
+//     "Content-Type": "application/json;charset=utf-8",
+//   },
+// };
 
-const optionCheckValidTeacher = {
-  method: "GET",
-  url:
-    "http://localhost:5001/complement-4254e/us-central1/app/elric/checkValidTeacher/?teacher_id=E1507788C",
-  // "https://us-central1-complement-4254e.cloudfunctions.net/app/elric/checkValidTeacher/?teacher_id=E1507788C",
-  headers: {
-    Authorization: "Basic ",
-    "Content-Type": "application/json;charset=utf-8",
-  },
-};
+// const optionCheckValidTeacher = {
+//   method: "GET",
+//   url:
+//     "http://localhost:5001/complement-4254e/us-central1/app/elric/checkValidTeacher/?teacher_id=E1507788C",
+//   // "https://us-central1-complement-4254e.cloudfunctions.net/app/elric/checkValidTeacher/?teacher_id=E1507788C",
+//   headers: {
+//     Authorization: "Basic ",
+//     "Content-Type": "application/json;charset=utf-8",
+//   },
+// };
 
-request(optionCheckValidTeacher, function (error, response, body) {
-  console.log(response.body);
-});
+// request(optionCheckValidTeacher, function (error, response, body) {
+//   console.log(response.body);
+// });

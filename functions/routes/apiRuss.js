@@ -172,8 +172,6 @@ router.post("/setArenaQuestionScore", (req, res) => {
   //   res.json(err);
   // })
 
-  
-  
 });
 
 //==========Fetch all Arena Question ==============
