@@ -18,7 +18,7 @@ router.post("/createStudentAccount", (req, res) => {
     stars: "0",
     medals: "0",
     current_progress: "1-1",
-    avatar_url: "NoAvatar"
+    avatar_url: "NoAvatar",
   });
   res.end("Account created");
 });
@@ -36,7 +36,7 @@ router.post("/createTeacherAccount", (req, res) => {
 
   teacher_id.set({
     class: teacherClass,
-    name: teacherName
+    name: teacherName,
   });
   res.end("Account created");
 });
@@ -49,17 +49,17 @@ router.post("/createWorld", (req, res) => {
   let studentRef = database.ref("Students");
 
   for (let x = 1; x <= 6; x++) {
-    setTimeout(function() {
+    setTimeout(function () {
       let world = mapRef.child("World-" + x);
       for (let y = 1; y <= 6; y++) {
-        setTimeout(function() {
+        setTimeout(function () {
           let section = world.child(x + "-" + y);
 
-          studentRef.once("value", function(snapshot) {
-            snapshot.forEach(function(childSnapshot) {
+          studentRef.once("value", function (snapshot) {
+            snapshot.forEach(function (childSnapshot) {
               let section_id = section.child(childSnapshot.key);
               section_id.set({
-                stars: y
+                stars: y,
               });
             });
           });
@@ -89,17 +89,17 @@ router.get("/getWorldStatus", (req, res) => {
     const maps = snap.val();
 
     /* Iterate through each world key */
-    Object.keys(maps).forEach(world => {
+    Object.keys(maps).forEach((world) => {
       const sections = maps[world]; /* sections object */
       /* Iterate through each section key */
-      Object.keys(sections).forEach(section => {
+      Object.keys(sections).forEach((section) => {
         const users = maps[world][section]; /* users object */
         /* Iterate through each user_id key */
-        Object.keys(users).forEach(id => {
+        Object.keys(users).forEach((id) => {
           if (studentMatric === id) {
             jsonResult.push({
               stage: section,
-              stars: maps[world][section][id]["stars"]
+              stars: maps[world][section][id]["stars"],
             });
           }
         });
@@ -151,14 +151,14 @@ router.get("/getCurrentWorldStatus", (req, res) => {
     const worlds = snap.val();
 
     /* Iterate through each section key */
-    Object.keys(worlds).forEach(section => {
+    Object.keys(worlds).forEach((section) => {
       const users = worlds[section]; /* users object */
       /* Iterate through each user_id key */
-      Object.keys(users).forEach(id => {
+      Object.keys(users).forEach((id) => {
         if (studentMatric === id) {
           jsonResult.push({
             stage: section,
-            stars: worlds[section][id]["stars"]
+            stars: worlds[section][id]["stars"],
           });
         }
       });
@@ -194,7 +194,7 @@ router.post("/setSectionStars", (req, res) => {
 
     /* No user has attempted this stage */
     if (!(section_id in users)) {
-      Object.keys(students).forEach(child => {
+      Object.keys(students).forEach((child) => {
         if (child === "stars") {
           let totalStars = parseInt(students[child]);
           let newStars = totalStars + parseInt(stars);
@@ -204,12 +204,12 @@ router.post("/setSectionStars", (req, res) => {
 
           /* Insert student stage stars */
           newPlayerRecord.set({
-            stars: stars.toString()
+            stars: stars.toString(),
           });
           /* Update specified student total stars achieved */
 
           studentRef.update({
-            stars: newStars.toString()
+            stars: newStars.toString(),
           });
         }
       });
@@ -224,29 +224,29 @@ router.post("/setSectionStars", (req, res) => {
       const users = snap.val();
 
       if (!(studentMatric in users)) {
-        Object.keys(students).forEach(child => {
+        Object.keys(students).forEach((child) => {
           if (child === "stars") {
             let totalStars = parseInt(students[child]);
             let newStars = totalStars + parseInt(stars);
 
             userRef.child(studentMatric).update({
-              stars: stars.toString()
+              stars: stars.toString(),
             });
 
             /* Update specified student total stars */
             studentRef.update({
-              stars: newStars.toString()
+              stars: newStars.toString(),
             });
           }
         });
       } else {
         /* Improvement in stars achieved in user attempt */
-        Object.keys(users).forEach(child => {
+        Object.keys(users).forEach((child) => {
           if (child === studentMatric) {
             let currentStars = parseInt(users[child].stars);
             let diffInStars = parseInt(stars) - currentStars;
 
-            Object.keys(students).forEach(child => {
+            Object.keys(students).forEach((child) => {
               if (child === "stars") {
                 let totalStars = parseInt(students[child]);
                 let newStars = totalStars + diffInStars;
@@ -254,12 +254,12 @@ router.post("/setSectionStars", (req, res) => {
                 if (diffInStars > 0) {
                   /* Update specified student star achieved in the stage */
                   userRef.child(studentMatric).update({
-                    stars: stars.toString()
+                    stars: stars.toString(),
                   });
 
                   /* Update specified student total stars achieved */
                   studentRef.update({
-                    stars: newStars.toString()
+                    stars: newStars.toString(),
                   });
                 }
               }
@@ -273,7 +273,7 @@ router.post("/setSectionStars", (req, res) => {
   res.end("Updates done!");
 });
 
-/* GET Request to check for valid user */
+/* GET Request to check for valid student */
 router.get("/checkValidStudent", (req, res) => {
   /* Firebase reference */
   let database = req.app.get("database");
@@ -291,11 +291,37 @@ router.get("/checkValidStudent", (req, res) => {
     const users = snap.val();
 
     if (studentMatric in users) {
-      res.end(users[studentMatric].class);
+      res.end(JSON.stringify(users[studentMatric]));
     } else {
       res.end("Invalid");
     }
   }
   checkValidStudent();
+});
+
+/* GET Request to check for valid teacher */
+router.get("/checkValidTeacher", (req, res) => {
+  /* Firebase reference */
+  let database = req.app.get("database");
+  let teacherRef = database.ref("Teachers");
+
+  // Retrieving teacher id under URL query string
+  const teacherId = req.query.teacher_id;
+  console.log(teacherId);
+  /* Asynchronous function */
+  async function checkValidTeacher() {
+    // Do all your await calls inside this function
+    const snap = await teacherRef.once("value");
+
+    /* JSON object for users */
+    const users = snap.val();
+
+    if (teacherId in users) {
+      res.end(JSON.stringify(users[teacherId]));
+    } else {
+      res.end("Invalid");
+    }
+  }
+  checkValidTeacher();
 });
 module.exports = router;
