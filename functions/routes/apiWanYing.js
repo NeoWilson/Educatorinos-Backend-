@@ -59,6 +59,7 @@ router.post("/addAssignmentQuestion", (req, res) => {
   
   let creator = request.creator;
   let title = request.title;
+  let group = request.group;
   let players = request.players;
   let quesobject = request.question;
  
@@ -67,6 +68,7 @@ router.post("/addAssignmentQuestion", (req, res) => {
   
   databaseRef.push({
     title: title,
+    group: group,
     players: players,
     teacher: creator,
     question: quesobject
@@ -92,7 +94,8 @@ router.get("/getAssignmentQuestions", (req, res) => {
 
     Object.keys(queslist).forEach(info=>{
       let jsonObj = {question: queslist[info]['question'], teacher: queslist[info]['teacher'], 
-                      title: queslist[info]['title'], players: queslist[info]['players']}
+                      group: queslist[info]['group'], title: queslist[info]['title'], 
+                      players: queslist[info]['players']}
       dict[info] = jsonObj
     })
 
