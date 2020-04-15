@@ -104,6 +104,21 @@ router.get("/getAssignmentQuestions", (req, res) => {
 });
 
 
+//==========Get Selected Assignment Question info ==============
+
+router.get("/getSelectAssignmentQuestion", (req, res) => {
+  
+  let aid = req.query.assignID;
+  let database = req.app.get("database");
+
+  let databaseRef = database.ref("Arena");
+  databaseRef = databaseRef.child("Assignment");
+  databaseRef = databaseRef.child(aid);
+  databaseRef.once("value", function(snapshot) {
+    let assignInfo = snapshot.val();
+    res.json(assignInfo);
+  });
+});
 
 module.exports = router;
 
