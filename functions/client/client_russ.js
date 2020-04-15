@@ -1,19 +1,18 @@
 // const request = require("request");
 
-// //========================Upload questions==================================
+//========================Upload questions==================================
 // var queryText = {
 //   worldID: "World-2",
-//   section: "1-1",
-//   difficulty: "hard",
-//   questions: "What is log(base 2) 40",
-//   options: [3, 4, 7, 1],
-//   answer: 0
+//   section: "2-4",
+//   difficulty: "easy",
+//   questions: "Who provided the first information regarding the Black Hole?",
+//   options: ["Copernicus", "Herman Bondy", "Rutherford", "S. Chandrasekhar"],
+//   answer: "S. Chandrasekhar"
 // };
 
 // const optionInitializeQuestions = {
 //   method: "POST",
-//   url:
-//     "http://localhost:5001/complement-4254e/us-central1/app/russ/addQuestion",
+//   url: "http://localhost:5001/complement-4254e/us-central1/app/russ/addQuestion",
 //   headers: {
 //     Authorization: "Basic ",
 //     "Content-Type": "application/json;charset=utf-8"
@@ -21,17 +20,16 @@
 //   body: JSON.stringify(queryText)
 // };
 
-// //========================Get Stars /player/world==================================
-// //https://us-central1-complement-4254e.cloudfunctions.net/app/russ/getStar
+//========================Get Stars /player/world==================================
+//https://us-central1-complement-4254e.cloudfunctions.net/app/russ/getStar
 
 // const optionGetStars = {
 //   method: "GET",
-//   url:
-//     "https://us-central1-complement-4254e.cloudfunctions.net/app/russ/getStar/?worldID=World-1&playerID=U1720925C",
+//   url: "https://us-central1-complement-4254e.cloudfunctions.net/app/russ/getStar/?worldID=World-1&playerID=U1720925C",
 //   headers: {
 //     Authorization: "Basic ",
 //     "Content-Type": "application/json;charset=utf-8"
-//   }
+//   },
 // };
 
 //========================Get question set per section==================================

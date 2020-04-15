@@ -52,4 +52,56 @@ router.get("/getLeaderboard", (req, res) => {
   });
 });
 
+//==========Create Assignment Questions==============
+router.post("/addAssignmentQuestion", (req, res) => {
+  let database = req.app.get("database");
+  let request = req.body;
+  
+  let creator = request.creator;
+  let title = request.title;
+  let players = request.players;
+  let quesobject = request.question;
+ 
+  let databaseRef = database.ref("Arena");
+  databaseRef = databaseRef.child("Assignment");
+  
+  databaseRef.push({
+    title: title,
+    players: players,
+    teacher: creator,
+    question: quesobject
+  });
+ 
+  res.end("Assignment upload complete");
+});
+
+
+
+//==========Fetch all Assignment Question ==============
+
+router.get("/getAssignmentQuestions", (req, res) => {
+
+  let database = req.app.get("database");
+
+  let databaseRef = database.ref("Arena");
+  databaseRef = databaseRef.child("Assignment");
+  
+  databaseRef.once("value", function(snapshot) {
+    let queslist = snapshot.val();
+    let dict = {}
+
+    Object.keys(queslist).forEach(info=>{
+      let jsonObj = {question: queslist[info]['question'], teacher: queslist[info]['teacher'], 
+                      title: queslist[info]['title'], players: queslist[info]['players']}
+      dict[info] = jsonObj
+    })
+
+    res.json(dict);
+  });
+});
+
+
+
 module.exports = router;
+
+
