@@ -1,4 +1,4 @@
-const request = require("request");
+// const request = require("request");
 
 // /* POST request to generate records for each world */
 // const optionPostCreateWorld = {
@@ -71,9 +71,9 @@ const optionPostUpdateSectionStars = {
 
 // /* POST request to create teacher account */
 // var queryText = {
-//   teacherID: "E1728357D",
-//   teacherName: "Guang Wei",
-//   teacherClass: "TSP8"
+//   teacher_id: "E1728357D",
+//   teacher_name: "Guang Wei",
+//   teacher_class: "TSP8"
 // };
 
 // const optionPostCreateTeacherAccount = {

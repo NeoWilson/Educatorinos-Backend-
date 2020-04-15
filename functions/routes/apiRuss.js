@@ -109,6 +109,39 @@ router.post("/addArenaQuestion", (req, res) => {
 //   });
 // }
 
+function getMedal(matric, database){
+  
+  let arenaRef = database.ref("Arena").child("Questions")
+  return arenaRef.once("value").then(function(snapshot){
+    let questionObj = snapshot.val();
+    let quesKeys = Object.keys(questionObj);
+    let medalcount = 0
+    for(let i =0; i< quesKeys.length;i++){
+        if ('players' in questionObj[quesKeys[i]]){
+          if (matric in questionObj[quesKeys[i]]['players']){
+            medalcount = medalcount + questionObj[quesKeys[i]]['players'][matric]['medal']
+          }
+        }
+    }
+
+    let userRef = database.ref("Students").child(matric);
+    userRef.update({medals:medalcount})
+    return "ok"
+  }).catch((err)=>{
+    throw new Error(err);
+  });
+}
+
+// function updateMedal(matric, database){
+  
+//   getMedal(matric, database).then((medalcount)=>{
+//     let userRef = database.ref("Students").child(matric);
+//     userRef.update({medals:medalcount})
+//   }).catch((err)=>{
+//     throw new Error(err);
+//   })
+// }
+
 router.post("/setArenaQuestionScore", (req, res) => {
   let database = req.app.get("database");
   let request = req.body;
@@ -125,13 +158,18 @@ router.post("/setArenaQuestionScore", (req, res) => {
   
   matricRef.set({medal: medal});
 
-  playerRef.once("value", function(snapshot){
-    let quesObj = snapshot.val();
-    let len_of_attempts = Object.keys(quesObj).length; 
-    qidRef.update({attempts:len_of_attempts})
+  return getMedal(matric, database).then((status)=>{
+    playerRef.once("value", function(snapshot){
+      let quesObj = snapshot.val();
+      let len_of_attempts = Object.keys(quesObj).length; 
+      qidRef.update({attempts:len_of_attempts})
+    })
+    res.end("ok");
+    return status;
+    // res.json(status);
+  }).catch((err)=>{
+    throw err;
   })
-
-  res.json("ok");
 
   // getAttempts(playerRef).then((attempt)=>{
   //   qidRef.update({attempts:attempt})
@@ -140,8 +178,6 @@ router.post("/setArenaQuestionScore", (req, res) => {
   //   res.json(err);
   // })
 
-  
-  
 });
 
 //==========Fetch all Arena Question ==============
