@@ -120,6 +120,37 @@ router.get("/getSelectAssignmentQuestion", (req, res) => {
   });
 });
 
+
+
+//==========Set Arena Assignment Player==============
+
+router.post("/setAssignmentPlayer", (req, res) => {
+  let database = req.app.get("database");
+  let request = req.body;
+  
+  let aid = request.assignID;
+  let matric = request.matric;
+
+  let databaseRef = database.ref("Arena");
+  let assignRef = databaseRef.child("Assignment");
+  let aidRef = assignRef.child(aid);
+
+    aidRef.once("value", function(snapshot) {
+    let aidlist = snapshot.val();
+    console.log(aidlist)
+      if ("players" in aidlist){
+        let arr = aidlist["players"]
+        arr.push(matric)
+        aidRef.update({players : arr})
+      } else {
+        aidRef.update({ players: [matric]});
+      }
+    res.json("New players added to assignment");
+  });
+
+});
+
+
 module.exports = router;
 
 
