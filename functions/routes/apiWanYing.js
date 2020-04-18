@@ -124,100 +124,30 @@ router.get("/getSelectAssignmentQuestion", (req, res) => {
 
 //==========Set Arena Assignment Player==============
 
-// function getAttempts(playerRef) {
-
-//   return playerRef.once("value").then(function(snapshot) {
-//     let quesObj = snapshot.val();
-//     let len_of_attempts = Object.keys(quesObj).length; 
-//     return len_of_attempts;
-//   }).catch((err)=>{
-//     throw new Error(err)
-//   });
-// }
-
-// function getPlayers(matric, database){
-  
-//   let arenaRef = database.ref("Arena").child("Assignment")
-//   return arenaRef.once("value").then(function(snapshot){
-//     let questionObj = snapshot.val();
-//     let quesKeys = Object.keys(questionObj);
-//     let medalcount = 0
-//     for(let i =0; i< quesKeys.length;i++){
-//         if ('players' in questionObj[quesKeys[i]]){
-//           if (matric in questionObj[quesKeys[i]]['players']){
-//             medalcount = medalcount + questionObj[quesKeys[i]]['players'][matric]['medal']
-//           }
-//         }
-//     }
-
-//     let userRef = database.ref("Students").child(matric);
-//     userRef.update({medals:medalcount})
-//     return "ok"
-//   }).catch((err)=>{
-//     throw new Error(err);
-//   });
-// }
-
 router.post("/setAssignmentPlayer", (req, res) => {
   let database = req.app.get("database");
   let request = req.body;
   
   let aid = request.assignID;
   let matric = request.matric;
-  // let medal = request.medal;
 
   let databaseRef = database.ref("Arena");
   let assignRef = databaseRef.child("Assignment");
   let aidRef = assignRef.child(aid);
-  // let playerRef = qidRef.child("players");
-  // let matricRef = aidRef.child(matric);
 
-  let playerRef = aidRef.child("players"); 
-
-  playerRef.once("value", function(snapshot) {
-    let playerlist = snapshot.val();
-    // let dict = {}
-
-    Object.keys(playerlist).forEach(info=>{
-      // let jsonObj = {question: queslist[info]['question'], teacher: queslist[info]['teacher'], 
-      //                 group: queslist[info]['group'], title: queslist[info]['title'], 
-      //                 players: queslist[info]['players']}
-      // dict[info] = jsonObj
-      // playerlist.set({players: matric});
-      // playerRef.set(matric);
-      playerlist[info] = matric;
-  
-
-    })
-
-    res.json(playerlist);
+    aidRef.once("value", function(snapshot) {
+    let aidlist = snapshot.val();
+    console.log(aidlist)
+      if ("players" in aidlist){
+        let arr = aidlist["players"]
+        arr.push(matric)
+        aidRef.update({players : arr})
+      } else {
+        aidRef.update({ players: [matric]});
+      }
+    res.json("New players added to assignment");
   });
 
-
-
-  // aidRef.set({players: matric});
-  // matricRef.set({medal: medal});
-
-  // return getPlayers(matric, database).then((status)=>{
-  //   playerRef.once("value", function(snapshot){
-  //     let quesObj = snapshot.val();
-  //     let len_of_attempts = Object.keys(quesObj).length; 
-  //     qidRef.update({attempts:len_of_attempts})
-  //   })
-  //   res.end("ok");
-  //   return status;
-  //   // res.json(status);
-  // }).catch((err)=>{
-  //   throw err;
-  // })
-
-  // getAttempts(playerRef).then((attempt)=>{
-  //   qidRef.update({attempts:attempt})
-  //   res.json("Ok");
-  // }).catch((err)=>{
-  //   res.json(err);
-  // })
-  // res.end("New player added");
 });
 
 
