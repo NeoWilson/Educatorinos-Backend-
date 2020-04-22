@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 
+//==========Retrieve the Population of a Selected World==============
 router.get("/getWorldPopulation", (req, res) => {
   let database = req.app.get("database");
   let worldID = req.query.worldID;
@@ -25,6 +26,8 @@ router.get("/getWorldPopulation", (req, res) => {
   });
 });
 
+
+//==========Retrieve Leaderboard Information==============
 router.get("/getLeaderboard", (req, res) => {
   let database = req.app.get("database");
   let worldID = req.query.worldID;
@@ -55,17 +58,17 @@ router.get("/getLeaderboard", (req, res) => {
 //==========Create Assignment Questions==============
 router.post("/addAssignmentQuestion", (req, res) => {
   let database = req.app.get("database");
-  let request = req.body;
+  let request = req.body; // Get param from URL query string
   
-  let creator = request.creator;
-  let title = request.title;
-  let group = request.group;
-  let players = request.players;
-  let quesobject = request.question;
+  let creator = request.creator; //teacherID
+  let title = request.title; // title of the assignment
+  let group = request.group; // class
+  let players = request.players; //student matriculation 
+  let quesobject = request.question; // a list of question objects
  
   let databaseRef = database.ref("Arena");
   databaseRef = databaseRef.child("Assignment");
-  
+  // add the new assignment with its relevant attributes into database
   databaseRef.push({
     title: title,
     group: group,
@@ -74,78 +77,77 @@ router.post("/addAssignmentQuestion", (req, res) => {
     question: quesobject
   });
  
-  res.end("Assignment upload complete");
+  res.end("Assignment upload complete"); // return success message
 });
 
 
 
 //==========Fetch all Assignment Question ==============
-
-router.get("/getAssignmentQuestions", (req, res) => {
+router.get("/getAssignmentQuestions", (req, res) => { 
 
   let database = req.app.get("database");
 
   let databaseRef = database.ref("Arena");
-  databaseRef = databaseRef.child("Assignment");
+  databaseRef = databaseRef.child("Assignment"); // pointer points to assignment in firebase
   
   databaseRef.once("value", function(snapshot) {
-    let queslist = snapshot.val();
+    let assignlist = snapshot.val();
     let dict = {}
 
-    Object.keys(queslist).forEach(info=>{
-      let jsonObj = {question: queslist[info]['question'], teacher: queslist[info]['teacher'], 
-                      group: queslist[info]['group'], title: queslist[info]['title'], 
-                      players: queslist[info]['players']}
-      dict[info] = jsonObj
+    Object.keys(assignlist).forEach(info=>{
+      let jsonObj = {question: assignlist[info]['question'], 
+                     teacher: assignlist[info]['teacher'], 
+                     group: assignlist[info]['group'], 
+                     title: assignlist[info]['title'], 
+                     players: assignlist[info]['players']}
+      dict[info] = jsonObj // format the data to be returned as a dict
     })
 
-    res.json(dict);
+    res.json(dict); // return all assignment info
   });
 });
 
 
 //==========Get Selected Assignment Question info ==============
-
 router.get("/getSelectAssignmentQuestion", (req, res) => {
   
-  let aid = req.query.assignID;
+  let aid = req.query.assignID; // get the chosen assignment id from param
   let database = req.app.get("database");
 
   let databaseRef = database.ref("Arena");
   databaseRef = databaseRef.child("Assignment");
-  databaseRef = databaseRef.child(aid);
+  databaseRef = databaseRef.child(aid); // databaseRef referencing a selected assignment
   databaseRef.once("value", function(snapshot) {
     let assignInfo = snapshot.val();
-    res.json(assignInfo);
+    res.json(assignInfo); // return the selected assignment info
   });
 });
 
 
 
 //==========Set Arena Assignment Player==============
-
 router.post("/setAssignmentPlayer", (req, res) => {
   let database = req.app.get("database");
   let request = req.body;
   
-  let aid = request.assignID;
-  let matric = request.matric;
+  let aid = request.assignID; // get the chosen assignment id from param
+  let matric = request.matric; // get the player id (matric) from param
 
   let databaseRef = database.ref("Arena");
   let assignRef = databaseRef.child("Assignment");
-  let aidRef = assignRef.child(aid);
+  let aidRef = assignRef.child(aid);  // aideRef referencing a selected assignment
 
     aidRef.once("value", function(snapshot) {
     let aidlist = snapshot.val();
     console.log(aidlist)
-      if ("players" in aidlist){
-        let arr = aidlist["players"]
-        arr.push(matric)
-        aidRef.update({players : arr})
-      } else {
-        aidRef.update({ players: [matric]});
+      if ("players" in aidlist){ // check if there are existing players
+        let arr = aidlist["players"] // copy the existing players into the new created arr
+        arr.push(matric)  // add a new player id (matric) into the arr
+        aidRef.update({players : arr}) // update the pointer to set a new dict that consists of the updated arr
+      } else { // no existing players 
+        aidRef.update({ players: [matric]}); // update the pointer to set a new dict that consists of the given matric in an arr
       }
-    res.json("New players added to assignment");
+    res.json("New players added to assignment"); // return success message
   });
 
 });
