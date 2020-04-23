@@ -13,13 +13,22 @@ app.use(require("cors")({ origin: true, credentials: true }));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
-// var serviceAccount = require("../functions/private/complement-4254e-firebase-adminsdk-i34zx-589c173735.json");
+//======================================Used for Firebase deployment (Production)===============================================
+
 admin.initializeApp({
-  // credential: admin.credential.cert(serviceAccount),
   credential: admin.credential.applicationDefault(),
   databaseURL: "https://complement-4254e.firebaseio.com",
   storageBucket: "complement-4254e.appspot.com",
 });
+
+//======================================Used for local deployment (Development)===============================================
+
+// var serviceAccount = require("../functions/private/complement-4254e-firebase-adminsdk-i34zx-589c173735.json");
+// admin.initializeApp({
+//   credential: admin.credential.cert(serviceAccount),
+//   databaseURL: "https://complement-4254e.firebaseio.com",
+//   storageBucket: "complement-4254e.appspot.com",
+// });
 
 const database = admin.database();
 const storage = admin.storage();
@@ -34,15 +43,13 @@ app.use("/elric", elricRouter);
 app.use("/wilson", wilsonRouter);
 app.use("/wy", wanyingRouter);
 
-// async function genAvatarUrl(avatarid){
+//======================================Used to make Avatar URL links public===============================================
 
+// async function genAvatarUrl(avatarid){
 // 	let filename = avatarid + ".jpg"
 // 	let file = bucket.file(filename);
-
 // 	await file.makePublic();
-
 // 	return `https://storage.googleapis.com/complement-4254e.appspot.com/${filename}`
-
 // }
 
 // for (let i = 1; i< 7;i++){

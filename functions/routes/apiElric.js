@@ -30,9 +30,9 @@ router.post("/createTeacherAccount", (req, res) => {
   let teacherRef = database.ref("Teachers");
 
   /* POST variables */
-  const teacher_id = teacherRef.child(req.body.teacherID);
-  const teacherName = req.body.teacherName;
-  const teacherClass = req.body.teacherClass;
+  const teacher_id = teacherRef.child(req.body.teacher_id);
+  const teacherName = req.body.teacher_name;
+  const teacherClass = req.body.teacher_class;
 
   teacher_id.set({
     class: teacherClass,
